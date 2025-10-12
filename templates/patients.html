@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}My Patients{% endblock %}
+
+{% block content %}
+<div class="main-container">
+    <div style="margin-bottom: 1.5rem;">
+        <a href="{{ url_for('dashboard') }}" style="color: #7F8C9D; text-decoration: none;">
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </a>
+    </div>
+
+    <div class="page-header">
+        <h1>My Patients</h1>
+        <p class="page-subtitle">View all patients and their analysis history</p>
+    </div>
+
+    <div class="recent-section">
+        {% if patients %}
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem;">
+                {% for patient in patients %}
+                <div style="background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); cursor: pointer;"
+                     onclick="location.href='{{ url_for('patient_detail', patient_id=patient.id) }}'">
+                    <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 1.2rem;">
+                            {{ patient.patient_name[0].upper() }}
+                        </div>
+                        <div style="margin-left: 1rem;">
+                            <h3 style="margin: 0; color: var(--text-dark);">{{ patient.patient_name }}</h3>
+                            <p style="margin: 0; color: var(--text-light); font-size: 0.9rem;">ID: {{ patient.patient_id }}</p>
+                        </div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; color: var(--text-light); font-size: 0.9rem;">
+                        <span><i class="fas fa-birthday-cake"></i> {{ patient.age or 'N/A' }} years</span>
+                        <span><i class="fas fa-venus-mars"></i> {{ patient.gender or 'N/A' }}</span>
+                    </div>
+                    <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #E1E8ED;">
+                        <span style="color: var(--text-light); font-size: 0.85rem;">
+                            {{ patient.audio_files|length }} recording(s)
+                        </span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div style="text-align: center; padding: 4rem; color: var(--text-light);">
+                <i class="fas fa-users" style="font-size: 4rem; margin-bottom: 1rem;"></i>
+                <p>No patients yet. Upload your first analysis to get started!</p>
+                <button onclick="location.href='{{ url_for('dashboard') }}'" 
+                        style="margin-top: 1rem; padding: 0.75rem 2rem; background: var(--primary-blue); color: white; border: none; border-radius: 8px; cursor: pointer;">
+                    Go to Dashboard
+                </button>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

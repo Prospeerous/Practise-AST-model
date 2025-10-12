@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Patients{% endblock %}
+
+{% block content %}
+<div class="main-container">
+    <div style="margin-bottom: 1.5rem;">
+        <a href="{{ url_for('admin_dashboard') }}" style="color: #7F8C9D; text-decoration: none;">
+            <i class="fas fa-arrow-left"></i> Back to Admin Dashboard
+        </a>
+    </div>
+
+    <div class="page-header">
+        <h1><i class="fas fa-users"></i> Manage All Patients</h1>
+        <p class="page-subtitle">View and reassign patients to different clinicians</p>
+    </div>
+
+    <div class="recent-section">
+        <div class="table-responsive" style="background: white; border-radius: 12px; padding: 1.5rem; overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr style="background: #F8F9FA; border-bottom: 2px solid #E1E8ED;">
+                        <th style="padding: 1rem; text-align: left;">Patient Name</th>
+                        <th style="padding: 1rem; text-align: left;">Patient ID</th>
+                        <th style="padding: 1rem; text-align: left;">Age</th>
+                        <th style="padding: 1rem; text-align: left;">Gender</th>
+                        <th style="padding: 1rem; text-align: left;">Current Clinician</th>
+                        <th style="padding: 1rem; text-align: left;">Recordings</th>
+                        <th style="padding: 1rem; text-align: left;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for patient in patients %}
+                    <tr style="border-bottom: 1px solid #E1E8ED;">
+                        <td style="padding: 1rem;">
+                            <strong>{{ patient.patient_name }}</strong>
+                        </td>
+                        <td style="padding: 1rem;">{{ patient.patient_id }}</td>
+                        <td style="padding: 1rem;">{{ patient.age or 'N/A' }}</td>
+                        <td style="padding: 1rem;">{{ patient.gender or 'N/A' }}</td>
+                        <td style="padding: 1rem;">
+                            <span style="background: #E3F2FD; color: #1976D2; padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.85rem;">
+                                Dr. {{ patient.clinician.username }}
+                            </span>
+                        </td>
+                        <td style="padding: 1rem;">{{ patient.audio_files|length }}</td>
+                        <td style="padding: 1rem;">
+                            <button onclick="openReassignModal({{ patient.id }}, '{{ patient.patient_name }}')" 
+                                    style="padding: 0.5rem 1rem; background: var(--primary-blue); color: white; border: none; border-radius: 6px; cursor: pointer;">
+                                <i class="fas fa-exchange-alt"></i> Reassign
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Reassign Modal -->
+<div id="reassignModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000;">
+    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 2rem; border-radius: 12px; width: 90%; max-width: 500px;">
+        <h3 style="margin-bottom: 1.5rem;">Reassign Patient</h3>
+        
+        <form method="POST" action="{{ url_for('admin_reassign_patient') }}">
+            <input type="hidden" id="modalPatientId" name="patient_id">
+            
+            <p style="margin-bottom: 1.5rem;">
+                Reassign patient <strong id="modalPatientName"></strong> to a different clinician:
+            </p>
+            
+            <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Select New Clinician:</label>
+                <select name="clinician_id" required style="width: 100%; padding: 0.75rem; border: 1px solid #E1E8ED; border-radius: 8px;">
+                    {% for clinician in clinicians %}
+                    <option value="{{ clinician.id }}">Dr. {{ clinician.username }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div style="display: flex; gap: 1rem;">
+                <button type="submit" style="flex: 1; padding: 0.75rem; background: var(--primary-blue); color: white; border: none; border-radius: 8px; cursor: pointer;">
+                    Confirm Reassignment
+                </button>
+                <button type="button" onclick="closeReassignModal()" style="flex: 1; padding: 0.75rem; background: #E1E8ED; color: var(--text-dark); border: none; border-radius: 8px; cursor: pointer;">
+                    Cancel
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+function openReassignModal(patientId, patientName) {
+    document.getElementById('modalPatientId').value = patientId;
+    document.getElementById('modalPatientName').textContent = patientName;
+    document.getElementById('reassignModal').style.display = 'block';
+}
+
+function closeReassignModal() {
+    document.getElementById('reassignModal').style.display = 'none';
+}
+</script>
+{% endblock %}

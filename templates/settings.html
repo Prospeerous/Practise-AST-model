@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Settings{% endblock %}
+
+{% block content %}
+<div class="main-container">
+    <div class="page-header">
+        <h1><i class="fas fa-cog"></i> Account Settings</h1>
+        <p class="page-subtitle">Manage your profile and preferences</p>
+    </div>
+
+    <div style="background: white; border-radius: 12px; padding: 2rem; max-width: 600px;">
+        <form method="POST">
+            <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Username</label>
+                <input type="text" name="username" value="{{ current_user.username }}" 
+                       style="width: 100%; padding: 0.75rem; border: 1px solid #E1E8ED; border-radius: 8px;">
+            </div>
+
+            <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Email</label>
+                <input type="email" value="{{ current_user.email }}" disabled
+                       style="width: 100%; padding: 0.75rem; border: 1px solid #E1E8ED; border-radius: 8px; background: #F5F5F5;">
+                <small style="color: #666;">Email cannot be changed</small>
+            </div>
+
+            <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Role</label>
+                <input type="text" value="{{ current_user.role }}" disabled
+                       style="width: 100%; padding: 0.75rem; border: 1px solid #E1E8ED; border-radius: 8px; background: #F5F5F5;">
+            </div>
+
+            <button type="submit" style="padding: 0.75rem 2rem; background: var(--primary-blue); color: white; border: none; border-radius: 8px; cursor: pointer;">
+                Save Changes
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

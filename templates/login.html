@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Login - Lung Sound Analysis{% endblock %}
+
+{% block content %}
+<div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+    <div style="background: white; padding: 3rem; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); width: 100%; max-width: 450px;">
+        <div style="text-align: center; margin-bottom: 2rem;">
+            <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 50%; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-lungs" style="font-size: 2.5rem; color: white;"></i>
+            </div>
+            <h1 style="font-size: 1.8rem; color: #2C3E50; margin-bottom: 0.5rem;">Welcome Back</h1>
+            <p style="color: #7F8C9D;">Login to access your lung sound analysis dashboard</p>
+        </div>
+
+        <form method="POST" action="{{ url_for('login') }}">
+            <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #2C3E50;">Email Address</label>
+                <input type="email" name="email" required style="width: 100%; padding: 0.75rem; border: 2px solid #E1E8ED; border-radius: 8px; font-size: 1rem;" placeholder="Enter your email">
+            </div>
+
+            <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #2C3E50;">Password</label>
+                <input type="password" name="password" required style="width: 100%; padding: 0.75rem; border: 2px solid #E1E8ED; border-radius: 8px; font-size: 1rem;" placeholder="Enter your password">
+            </div>
+
+            <button type="submit" style="width: 100%; padding: 1rem; background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%); color: white; border: none; border-radius: 8px; font-weight: 600; font-size: 1rem; cursor: pointer; transition: transform 0.2s;">
+                <i class="fas fa-sign-in-alt"></i> Login
+            </button>
+        </form>
+
+        <div style="text-align: center; margin-top: 1.5rem;">
+            <p style="color: #7F8C9D;">Don't have an account? <a href="{{ url_for('register') }}" style="color: #4A90E2; text-decoration: none; font-weight: 600;">Register here</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

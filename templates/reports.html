@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}Reports{% endblock %}
+
+{% block content %}
+<div class="main-container">
+    <div class="page-header">
+        <h1><i class="fas fa-chart-bar"></i> Analysis Reports</h1>
+        <p class="page-subtitle">Statistical overview of your analyses</p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+        <div style="background: white; padding: 1.5rem; border-radius: 12px; text-align: center;">
+            <h3 style="color: #4A90E2; font-size: 2rem;">{{ stats.total_analyses }}</h3>
+            <p>Total Analyses</p>
+        </div>
+        <div style="background: white; padding: 1.5rem; border-radius: 12px; text-align: center;">
+            <h3 style="color: #90EE90; font-size: 2rem;">{{ stats.normal_count }}</h3>
+            <p>Normal</p>
+        </div>
+        <div style="background: white; padding: 1.5rem; border-radius: 12px; text-align: center;">
+            <h3 style="color: #FFD700; font-size: 2rem;">{{ stats.crackle_count }}</h3>
+            <p>Crackle</p>
+        </div>
+        <div style="background: white; padding: 1.5rem; border-radius: 12px; text-align: center;">
+            <h3 style="color: #FFB6C1; font-size: 2rem;">{{ stats.wheeze_count }}</h3>
+            <p>Wheeze</p>
+        </div>
+        <div style="background: white; padding: 1.5rem; border-radius: 12px; text-align: center;">
+            <h3 style="color: #FF6B6B; font-size: 2rem;">{{ stats.both_count }}</h3>
+            <p>Both</p>
+        </div>
+    </div>
+
+    <div class="recent-section">
+        <h2>All Analyses</h2>
+        <ul class="upload-list">
+            {% for analysis in analyses %}
+            <li class="upload-item">
+                <div class="upload-item-left">
+                    <div class="file-icon"><i class="fas fa-file-audio"></i></div>
+                    <div class="file-info">
+                        <h4>{{ analysis.audio_file.patient.patient_name }}</h4>
+                        <p class="file-meta">{{ analysis.analysis_date.strftime('%b %d, %Y') }}</p>
+                    </div>
+                </div>
+                <span class="status-badge status-complete">{{ analysis.classification }}</span>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}

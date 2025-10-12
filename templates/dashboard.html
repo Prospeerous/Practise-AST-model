@@ -1,0 +1,222 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Audio Analysis{% endblock %}
+
+{% block content %}
+<div class="main-container">
+    <div class="page-header">
+        <h1>Audio Analysis Dashboard</h1>
+        <p class="page-subtitle">Upload and analyze lung sound recordings for respiratory disease detection</p>
+    </div>
+
+    <!-- Upload Section with Patient Form -->
+    <div class="upload-card">
+        <h3 style="margin-bottom: 2rem; color: var(--text-dark);">
+            <i class="fas fa-user-injured"></i> New Patient Analysis
+        </h3>
+        
+        <form id="uploadForm" enctype="multipart/form-data">
+            <!-- Patient Information -->
+            <div style="background: #F8F9FA; padding: 2rem; border-radius: 12px; margin-bottom: 2rem;">
+                <h4 style="margin-bottom: 1.5rem; color: var(--primary-blue);">Patient Information</h4>
+                
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;">
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Patient Name *</label>
+                        <input type="text" name="patient_name" required
+                               style="width: 100%; padding: 0.75rem; border: 1px solid #E1E8ED; border-radius: 8px;">
+                    </div>
+                    
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Patient ID/Medical Record # *</label>
+                        <input type="text" name="patient_id" required
+                               style="width: 100%; padding: 0.75rem; border: 1px solid #E1E8ED; border-radius: 8px;">
+                    </div>
+                    
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Age</label>
+                        <input type="number" name="age" min="0" max="150"
+                               style="width: 100%; padding: 0.75rem; border: 1px solid #E1E8ED; border-radius: 8px;">
+                    </div>
+                    
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Gender</label>
+                        <select name="gender"
+                                style="width: 100%; padding: 0.75rem; border: 1px solid #E1E8ED; border-radius: 8px;">
+                            <option value="">Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 1.5rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Recording Location</label>
+                    <select name="recording_location"
+                            style="width: 100%; padding: 0.75rem; border: 1px solid #E1E8ED; border-radius: 8px;">
+                        <option value="chest">Chest (Anterior)</option>
+                        <option value="back">Back (Posterior)</option>
+                        <option value="left">Left Side</option>
+                        <option value="right">Right Side</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Audio File Upload -->
+            <div class="upload-zone" id="uploadZone">
+                <div class="upload-icon">📁</div>
+                <h3>Drag and drop your audio file here</h3>
+                <p>or click to browse and select file</p>
+                <p class="format-info">Supported formats: WAV, MP3, FLAC (max 50MB)</p>
+                <input type="file" id="audioFile" name="audio_file" accept="audio/*" required>
+            </div>
+
+            <div id="fileInfo" style="display: none; background: #E3F2FD; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                <strong>Selected file:</strong> <span id="fileName"></span>
+                <button type="button" id="removeFile" style="float: right; background: none; border: none; color: #666; cursor: pointer;">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div id="analysisProgress" style="display: none; text-align: center; margin: 2rem 0;">
+                <div class="loading-spinner"></div>
+                <p style="margin-top: 1rem; color: var(--text-dark);"><strong>Analyzing lung sounds...</strong></p>
+                <p style="color: var(--text-light);">This may take a few moments</p>
+            </div>
+
+            <div style="text-align: center;">
+                <button type="submit" class="upload-btn" id="submitBtn">
+                    <i class="fas fa-microscope"></i> Analyze Recording
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Recent Analyses -->
+    <div class="recent-section">
+        <div class="section-header">
+            <h2>Recent Analyses</h2>
+            <a href="{{ url_for('patients_list') }}" class="view-all-link">View All Patients</a>
+        </div>
+
+        <ul class="upload-list">
+            {% if recent_analyses %}
+                {% for analysis in recent_analyses %}
+                <li class="upload-item">
+                    <div class="upload-item-left">
+                        <div class="file-icon">
+                            <i class="fas fa-file-audio"></i>
+                        </div>
+                        <div class="file-info">
+                            <h4>{{ analysis.audio_file.patient.patient_name }} - {{ analysis.audio_file.filename }}</h4>
+                            <p class="file-meta">
+                                Uploaded {{ analysis.analysis_date.strftime('%b %d, %Y at %I:%M %p') }} • 
+                                Patient ID: {{ analysis.audio_file.patient.patient_id }}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="upload-item-right">
+                        <span class="status-badge status-complete">{{ analysis.classification }}</span>
+                        <button onclick="location.href='{{ url_for('view_results', analysis_id=analysis.id) }}'" 
+                                style="margin-left: 1rem; padding: 0.5rem 1rem; background: var(--primary-blue); color: white; border: none; border-radius: 6px; cursor: pointer;">
+                            <i class="fas fa-eye"></i> View
+                        </button>
+                    </div>
+                </li>
+                {% endfor %}
+            {% else %}
+                <li style="text-align: center; padding: 3rem; color: var(--text-light);">
+                    <i class="fas fa-folder-open" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                    <p>No analyses yet. Upload your first recording above!</p>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+const uploadZone = document.getElementById('uploadZone');
+const fileInput = document.getElementById('audioFile');
+const fileInfo = document.getElementById('fileInfo');
+const fileName = document.getElementById('fileName');
+const removeFile = document.getElementById('removeFile');
+const uploadForm = document.getElementById('uploadForm');
+const submitBtn = document.getElementById('submitBtn');
+const analysisProgress = document.getElementById('analysisProgress');
+
+uploadZone.addEventListener('click', () => fileInput.click());
+
+uploadZone.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    uploadZone.style.borderColor = '#4A90E2';
+    uploadZone.style.backgroundColor = '#F0F7FF';
+});
+
+uploadZone.addEventListener('dragleave', () => {
+    uploadZone.style.borderColor = '#E1E8ED';
+    uploadZone.style.backgroundColor = '#FAFBFC';
+});
+
+uploadZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    uploadZone.style.borderColor = '#E1E8ED';
+    uploadZone.style.backgroundColor = '#FAFBFC';
+    
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+        fileInput.files = files;
+        showFileInfo(files[0].name);
+    }
+});
+
+fileInput.addEventListener('change', (e) => {
+    if (e.target.files.length > 0) {
+        showFileInfo(e.target.files[0].name);
+    }
+});
+
+function showFileInfo(name) {
+    fileName.textContent = name;
+    fileInfo.style.display = 'block';
+}
+
+removeFile.addEventListener('click', () => {
+    fileInput.value = '';
+    fileInfo.style.display = 'none';
+});
+
+uploadForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const formData = new FormData(uploadForm);
+    
+    submitBtn.disabled = true;
+    analysisProgress.style.display = 'block';
+    
+    try {
+        const response = await fetch('/upload', {
+            method: 'POST',
+            body: formData
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            alert('Analysis completed successfully!');
+            window.location.href = '/results/' + result.analysis_id;
+        } else {
+            alert('Error: ' + result.error);
+            submitBtn.disabled = false;
+            analysisProgress.style.display = 'none';
+        }
+    } catch (error) {
+        alert('An error occurred during analysis');
+        submitBtn.disabled = false;
+        analysisProgress.style.display = 'none';
+    }
+});
+</script>
+{% endblock %}

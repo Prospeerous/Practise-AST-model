@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Register - Lung Sound Analysis{% endblock %}
+
+{% block content %}
+<div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 2rem 0;">
+    <div style="background: white; padding: 3rem; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); width: 100%; max-width: 450px;">
+        <div style="text-align: center; margin-bottom: 2rem;">
+            <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 50%; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-user-md" style="font-size: 2.5rem; color: white;"></i>
+            </div>
+            <h1 style="font-size: 1.8rem; color: #2C3E50; margin-bottom: 0.5rem;">Create Account</h1>
+            <p style="color: #7F8C9D;">Register as a healthcare professional</p>
+        </div>
+
+        <form method="POST" action="{{ url_for('register') }}">
+            <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #2C3E50;">Full Name</label>
+                <input type="text" name="username" required style="width: 100%; padding: 0.75rem; border: 2px solid #E1E8ED; border-radius: 8px; font-size: 1rem;" placeholder="Dr. John Doe">
+            </div>
+
+            <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #2C3E50;">Email Address</label>
+                <input type="email" name="email" required style="width: 100%; padding: 0.75rem; border: 2px solid #E1E8ED; border-radius: 8px; font-size: 1rem;" placeholder="john.doe@hospital.com">
+            </div>
+
+            <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #2C3E50;">Password</label>
+                <input type="password" name="password" required style="width: 100%; padding: 0.75rem; border: 2px solid #E1E8ED; border-radius: 8px; font-size: 1rem;" placeholder="Create a strong password">
+            </div>
+
+            <button type="submit" style="width: 100%; padding: 1rem; background: linear-gradient(135deg, #90EE90 0%, #76c776 100%); color: white; border: none; border-radius: 8px; font-weight: 600; font-size: 1rem; cursor: pointer;">
+                <i class="fas fa-user-plus"></i> Create Account
+            </button>
+        </form>
+
+        <div style="text-align: center; margin-top: 1.5rem;">
+            <p style="color: #7F8C9D;">Already have an account? <a href="{{ url_for('login') }}" style="color: #4A90E2; text-decoration: none; font-weight: 600;">Login here</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}
