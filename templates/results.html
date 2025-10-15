@@ -3,118 +3,61 @@
 {% block title %}Analysis Results{% endblock %}
 
 {% block content %}
-<div class="main-container">
-    <div style="margin-bottom: 1.5rem;">
-        <a href="{{ url_for('dashboard') }}" style="color: #7F8C9D; text-decoration: none;">
-            <i class="fas fa-arrow-left"></i> Back to Dashboard
-        </a>
-    </div>
-
+<div class="results-center-wrapper">
+  <div class="results-card">
     <div class="page-header">
-        <h1>Analysis Results</h1>
-        <p class="page-subtitle">Detailed analysis of lung sound recording</p>
+      <h1>Analysis Results</h1>
+      <p class="page-subtitle">Detailed analysis of lung sound recording</p>
     </div>
-
-    <!-- Main Result Card -->
-    <div class="result-main-card">
-        <div class="result-header">
-            <div class="result-icon {% if classification == 'Normal' %}result-icon-success{% elif classification in ['Wheeze', 'Crackle'] %}result-icon-warning{% else %}result-icon-danger{% endif %}">
-                <i class="fas fa-{% if classification == 'Normal' %}check-circle{% elif classification in ['Wheeze', 'Crackle'] %}exclamation-triangle{% else %}notes-medical{% endif %}"></i>
-            </div>
-            <h2 class="result-title">{{ classification }}</h2>
-            <p class="result-subtitle">Detected Respiratory Pattern</p>
-        </div>
-
-        <!-- Confidence Score -->
-        <div class="confidence-section">
-            <h3>Model Confidence Level</h3>
-            <div class="confidence-bar-container">
-                <div class="confidence-bar" style="width: {{ confidence_score }}%;">
-                    <span class="confidence-text">{{ confidence_score }}%</span>
-                </div>
-            </div>
-            <p class="confidence-explanation">
-                This indicates how confident the AI model is about this classification.
-            </p>
-        </div>
-
-        <!-- Clinical Interpretation -->
-        <div class="meaning-section">
-            <h3><i class="fas fa-stethoscope"></i> Clinical Interpretation</h3>
-            <div class="meaning-content">
-                {% if classification == 'Normal' %}
-                    <p><strong>Normal Breathing Pattern Detected</strong></p>
-                    <p>The analysis indicates normal respiratory sounds with no significant abnormalities.</p>
-                {% elif classification == 'Wheeze' %}
-                    <p><strong>Wheezing Sound Detected</strong></p>
-                    <p>Wheezing is a high-pitched whistling sound produced by narrowed or obstructed airways.</p>
-                {% elif classification == 'Crackle' %}
-                    <p><strong>Crackles Detected</strong></p>
-                    <p>Crackles are short, explosive sounds typically associated with fluid in the airways.</p>
-                {% elif classification == 'Both' %}
-                    <p><strong>Both Wheezes and Crackles Detected</strong></p>
-                    <p>Multiple abnormal sounds detected indicating complex respiratory issues.</p>
-                {% endif %}
-            </div>
-        </div>
-
-        <!-- Notice Box -->
-        <div class="notice-box">
-            <div class="notice-icon">⚠️</div>
-            <div class="notice-content">
-                <h4>Important Medical Notice</h4>
-                <p>This AI-assisted analysis is a diagnostic aid tool only. Always consult with a qualified healthcare professional for proper diagnosis and treatment planning.</p>
-            </div>
-        </div>
+    <div class="result-section">
+      <div class="result-type">
+        <span class="result-type-icon">✅</span>
+        <span class="result-type-title">{{ classification }}</span>
+      </div>
+      <p class="result-type-desc">Detected Respiratory Pattern</p>
+      <hr class="section-divider">
+      <div class="confidence-group">
+        <h3>Model Confidence Level</h3>
+        <div class="confidence-score">{{ confidence_score }}%</div>
+        <p class="confidence-explanation">
+          This indicates how confident the AI model is about this classification.
+        </p>
+      </div>
+      <hr class="section-divider">
+      <div class="clinical-group">
+        <h3><span class="clinical-group-icon">🩺</span> Clinical Interpretation</h3>
+        <strong>{{ clinical_interpretation }}</strong>
+        <div>{{ clinical_detail }}</div>
+      </div>
+      <hr class="section-divider">
+      <div class="notice-group">
+        <h3><span class="notice-group-icon">⚠️</span> Important Medical Notice</h3>
+        <p>This AI-assisted analysis is a diagnostic aid tool only. Always consult with a qualified healthcare professional for proper diagnosis and treatment planning.</p>
+      </div>
+      <hr class="section-divider">
+      <div class="info-group">
+        <h3><span class="info-group-icon">ℹ️</span> Recording Information</h3>
+        <ul class="info-list">
+          <li><strong>Patient Name:</strong> {{ patient_name }}</li>
+          <li><strong>Patient ID:</strong> {{ patient_id }}</li>
+          <li><strong>Age:</strong> {{ age or 'N/A' }} years</li>
+          <li><strong>Gender:</strong> {{ gender or 'N/A' }}</li>
+          <li><strong>Recording Location:</strong> {{ recording_location }}</li>
+          <li><strong>File Name:</strong> {{ filename }}</li>
+          <li><strong>Analysis Date:</strong> {{ analysis_date }}</li>
+          <li><strong>File Size:</strong> {{ file_size }}</li>
+        </ul>
+      </div>
     </div>
-
-    <!-- Patient & Recording Info -->
-    <div class="info-card">
-        <h3><i class="fas fa-info-circle"></i> Recording Information</h3>
-        <div class="info-grid">
-            <div class="info-item">
-                <span class="info-label">Patient Name</span>
-                <span class="info-value">{{ patient_name }}</span>
-            </div>
-            <div class="info-item">
-                <span class="info-label">Patient ID</span>
-                <span class="info-value">{{ patient_id }}</span>
-            </div>
-            <div class="info-item">
-                <span class="info-label">Age</span>
-                <span class="info-value">{{ age or 'N/A' }} years</span>
-            </div>
-            <div class="info-item">
-                <span class="info-label">Gender</span>
-                <span class="info-value">{{ gender or 'N/A' }}</span>
-            </div>
-            <div class="info-item">
-                <span class="info-label">Recording Location</span>
-                <span class="info-value">{{ recording_location }}</span>
-            </div>
-            <div class="info-item">
-                <span class="info-label">File Name</span>
-                <span class="info-value">{{ filename }}</span>
-            </div>
-            <div class="info-item">
-                <span class="info-label">Analysis Date</span>
-                <span class="info-value">{{ analysis_date }}</span>
-            </div>
-            <div class="info-item">
-                <span class="info-label">File Size</span>
-                <span class="info-value">{{ file_size }}</span>
-            </div>
-        </div>
+    <div class="action-buttons" style="text-align:center; margin-top:2rem;">
+      <button class="btn-primary" onclick="window.print()">
+        <i class="fas fa-print"></i> Print Report
+      </button>
+      <button class="btn-secondary" onclick="location.href='{{ url_for('dashboard') }}'" style="margin-left:1rem;">
+        <i class="fas fa-home"></i> Back to Dashboard
+      </button>
     </div>
-
-    <!-- Action Buttons -->
-    <div class="action-buttons">
-        <button class="btn-primary" onclick="window.print()">
-            <i class="fas fa-print"></i> Print Report
-        </button>
-        <button class="btn-secondary" onclick="location.href='{{ url_for('dashboard') }}'">
-            <i class="fas fa-home"></i> Back to Dashboard
-        </button>
-    </div>
+  </div>
 </div>
+
 {% endblock %}

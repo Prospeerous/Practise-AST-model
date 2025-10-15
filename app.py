@@ -251,28 +251,9 @@ def not_found(e):
     flash('Not found.', 'error')
     return redirect(url_for('dashboard'))
 
-if __name__ == '__main__':
-    with app.app_context():
-        # Force drop and recreate all tables (FRESH START)
-        print("Dropping old tables...")
-        db.drop_all()
-        print("Creating new tables...")
-        db.create_all()
-        print("✓ Database initialized with fresh schema")
-        
-        # Create upload folder
-        upload_folder = app.config['UPLOAD_FOLDER']
-        if not os.path.exists(upload_folder):
-            os.makedirs(upload_folder)
-        print("✓ Upload folder ready")
-    
-    print("\n" + "="*50)
-    print("🫁 Lung Sound Analysis System Starting...")
-    print("="*50)
-    print("Open your browser to: http://127.0.0.1:5000")
-    print("="*50 + "\n")
-    
-    app.run(debug=True)
+
+
+
 @app.route('/reports')
 @login_required
 def reports():
@@ -312,3 +293,26 @@ def settings():
     
     return render_template('settings.html')
 
+
+if __name__ == '__main__':
+    with app.app_context():
+        # Force drop and recreate all tables (FRESH START)
+        print("Dropping old tables...")
+        db.drop_all()
+        print("Creating new tables...")
+        db.create_all()
+        print("✓ Database initialized with fresh schema")
+        
+        # Create upload folder
+        upload_folder = app.config['UPLOAD_FOLDER']
+        if not os.path.exists(upload_folder):
+            os.makedirs(upload_folder)
+        print("✓ Upload folder ready")
+    
+    print("\n" + "="*50)
+    print("🫁 Lung Sound Analysis System Starting...")
+    print("="*50)
+    print("Open your browser to: http://127.0.0.1:5000")
+    print("="*50 + "\n")
+    
+    app.run(debug=True)
