@@ -7,6 +7,67 @@ from datetime import datetime
 
 from database.models import db, User, Patient, AudioFile, AnalysisResult
 
+import numpy as np
+import torchaudio
+from models.ast_model import ASTModel
+import torch
+
+# Load models once at startup
+model_a = ASTModel(num_classes=4)
+model_a.load_state_dict(torch.load("outputs/model_a_best.pth", map_location="cpu"))
+model_a.eval()
+
+model_b = ASTModel(num_classes=5)
+model_b.load_state_dict(torch.load("outputs/model_b_best.pth", map_location="cpu"))
+model_b.eval()
+
+CLASS_LABELS_A = ['Normal', 'Crackle', 'Wheeze', 'Both']
+
+def predict_sound_class(filepath):
+    audio, sr = torchaudio.load(filepath)
+    
+    # Convert to mono if needed
+    if audio.shape[0] > 1:
+        audio = torch.mean(audio, dim=0, keepdim=True)
+    
+    # Resample to 22050 Hz if different
+    target_sr = 22050
+    if sr != target_sr:
+        resampler = torchaudio.transforms.Resample(sr, target_sr)
+        audio = resampler(audio)
+        sr = target_sr
+    
+    # Generate Mel spectrogram
+    melspec = torchaudio.transforms.MelSpectrogram(
+        sample_rate=sr,
+        n_mels=128,
+        n_fft=1024,
+        hop_length=512
+    )
+    spec = melspec(audio)
+    
+    # Pad or truncate to 862 frames width to match input shape
+    if spec.size(2) < 862:
+        spec = torch.nn.functional.pad(spec, (0, 862 - spec.size(2)))
+    else:
+        spec = spec[:, :, :862]
+    
+    # Normalize with mean and std (use training mean/std if known)
+    mean = spec.mean()
+    std = spec.std()
+    norm_spec = (spec - mean) / std
+    
+    input_tensor = norm_spec.unsqueeze(0)  # Add batch dimension
+    
+    with torch.no_grad():
+        logits = model_a(input_tensor)
+        prob = torch.nn.functional.softmax(logits, dim=1)
+        pred_idx = prob.argmax(dim=1).item()
+        conf = 100 * prob.max().item()
+    
+    return CLASS_LABELS_A[pred_idx], conf
+
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your-secret-key-for-academic-project'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///lung_sound.db'
@@ -28,7 +89,6 @@ def allowed_file(filename):
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-# Helper Functions
 def is_admin():
     return current_user.is_authenticated and current_user.role == 'admin'
 
@@ -55,7 +115,6 @@ def require_admin():
     if not is_admin():
         abort(403)
 
-# Routes
 @app.route('/')
 def index():
     if current_user.is_authenticated:
@@ -152,8 +211,8 @@ def upload_audio():
         db.session.add(audio_file)
         db.session.commit()
         
-        # TODO: Replace with AST model prediction
-        analysis = AnalysisResult(classification='Normal', confidence_score=95.0, audio_file_id=audio_file.id)
+        label, confidence = predict_sound_class(filepath)
+        analysis = AnalysisResult(classification=label, confidence_score=confidence, audio_file_id=audio_file.id)
         db.session.add(analysis)
         db.session.commit()
         
@@ -238,7 +297,7 @@ def create_admin():
         admin = User(username='System Admin', email='admin@lunganalysis.com', password_hash=generate_password_hash('admin123'), role='admin')
         db.session.add(admin)
         db.session.commit()
-        return "Admin created! Email: admin@lunganalysis.com, Password: admin123"
+        return "Admin created! Email: [admin@lunganalysis.com](mailto:admin@lunganalysis.com), Password: admin123"
     return "Admin already exists!"
 
 @app.errorhandler(403)
@@ -250,9 +309,6 @@ def forbidden(e):
 def not_found(e):
     flash('Not found.', 'error')
     return redirect(url_for('dashboard'))
-
-
-
 
 @app.route('/reports')
 @login_required
@@ -292,7 +348,6 @@ def settings():
             return redirect(url_for('settings'))
     
     return render_template('settings.html')
-
 
 if __name__ == '__main__':
     with app.app_context():
