@@ -93,48 +93,52 @@
         </form>
     </div>
 
-    <!-- Recent Analyses -->
-    <div class="recent-section">
-        <div class="section-header">
-            <h2>Recent Analyses</h2>
-            <a href="{{ url_for('patients_list') }}" class="view-all-link">View All Patients</a>
-        </div>
-
-        <ul class="upload-list">
-            {% if recent_analyses %}
-                {% for analysis in recent_analyses %}
-                <li class="upload-item">
-                    <div class="upload-item-left">
-                        <div class="file-icon">
-                            <i class="fas fa-file-audio"></i>
-                        </div>
-                        <div class="file-info">
-                            <h4>{{ analysis.audio_file.patient.patient_name }} - {{ analysis.audio_file.filename }}</h4>
-                            <p class="file-meta">
-                                Uploaded {{ analysis.analysis_date.strftime('%b %d, %Y at %I:%M %p') }} • 
-                                Patient ID: {{ analysis.audio_file.patient.patient_id }}
-                            </p>
-                        </div>
-                    </div>
-                    <div class="upload-item-right">
-                        <span class="status-badge status-complete">{{ analysis.classification }}</span>
-                        <button onclick="location.href='{{ url_for('view_results', analysis_id=analysis.id) }}'" 
-                                style="margin-left: 1rem; padding: 0.5rem 1rem; background: var(--primary-blue); color: white; border: none; border-radius: 6px; cursor: pointer;">
-                            <i class="fas fa-eye"></i> View
-                        </button>
-                    </div>
-                </li>
-                {% endfor %}
-            {% else %}
-                <li style="text-align: center; padding: 3rem; color: var(--text-light);">
-                    <i class="fas fa-folder-open" style="font-size: 3rem; margin-bottom: 1rem;"></i>
-                    <p>No analyses yet. Upload your first recording above!</p>
-                </li>
-            {% endif %}
-        </ul>
+   <!-- Recent Analyses -->
+<div class="recent-section">
+    <div class="section-header">
+        <h2>Recent Analyses</h2>
+        <a href="{{ url_for('patients_list') }}" class="view-all-link">View All Patients</a>
     </div>
+
+    <ul class="upload-list">
+        {% if recent_analyses %}
+            {% for analysis in recent_analyses %}
+            <li class="upload-item">
+                <div class="upload-item-left">
+                    <div class="file-icon">
+                        <i class="fas fa-file-audio"></i>
+                    </div>
+                    <div class="file-info">
+                        <h4>{{ analysis.audio_file.patient.patient_name }} - {{ analysis.audio_file.filename }}</h4>
+                        <p class="file-meta">
+                            Uploaded {{ analysis.analysis_date.strftime('%b %d, %Y at %I:%M %p') }} • 
+                            Patient ID: {{ analysis.audio_file.patient.patient_id }}
+                        </p>
+                    </div>
+                </div>
+                <div class="upload-item-right">
+                    <!-- FIXED: Changed from analysis.classification to analysis.disease_diagnosis with color coding -->
+                    <span class="status-badge" 
+                          style="background: {% if analysis.disease_diagnosis == 'Normal' %}linear-gradient(135deg, #10B981 0%, #059669 100%){% elif analysis.disease_diagnosis == 'Asthma' %}linear-gradient(135deg, #F59E0B 0%, #D97706 100%){% elif analysis.disease_diagnosis == 'COPD' %}linear-gradient(135deg, #EF4444 0%, #DC2626 100%){% elif analysis.disease_diagnosis == 'Pneumonia' %}linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%){% elif analysis.disease_diagnosis == 'Bronchitis' %}linear-gradient(135deg, #06B6D4 0%, #0891B2 100%){% else %}linear-gradient(135deg, #F97316 0%, #EA580C 100%){% endif %}; color: white;">
+                        {{ analysis.disease_diagnosis }}
+                    </span>
+                    <button onclick="location.href='{{ url_for('view_results', analysis_id=analysis.id) }}'" 
+                            style="margin-left: 1rem; padding: 0.5rem 1rem; background: var(--primary-blue); color: white; border: none; border-radius: 6px; cursor: pointer;">
+                        <i class="fas fa-eye"></i> View
+                    </button>
+                </div>
+            </li>
+            {% endfor %}
+        {% else %}
+            <li style="text-align: center; padding: 3rem; color: var(--text-light);">
+                <i class="fas fa-folder-open" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                <p>No analyses yet. Upload your first recording above!</p>
+            </li>
+        {% endif %}
+    </ul>
 </div>
-{% endblock %}
+</div>
+{% endblock %}  
 
 {% block extra_js %}
 <script>
