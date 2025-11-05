@@ -51,5 +51,9 @@ class AnalysisResult(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     classification = db.Column(db.String(100), nullable=False)
     confidence_score = db.Column(db.Float, nullable=False)
+    # --- Add the following two lines ---
+    disease_diagnosis = db.Column(db.String(100), nullable=True)   # The predicted disease label (e.g., Asthma, COPD)
+    disease_confidence = db.Column(db.Float, nullable=True)        # The confidence score for the disease prediction
+    
     analysis_date = db.Column(db.DateTime, default=datetime.utcnow)
     audio_file_id = db.Column(db.Integer, db.ForeignKey('audio_files.id'), nullable=False)
