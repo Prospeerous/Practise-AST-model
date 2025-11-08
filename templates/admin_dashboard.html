@@ -11,23 +11,29 @@
 
     <!-- Statistics Cards -->
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
-        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 2rem; border-radius: 12px; color: white;">
-            <i class="fas fa-user-md" style="font-size: 2.5rem; margin-bottom: 1rem;"></i>
-            <h2 style="margin: 0; font-size: 2.5rem;">{{ total_users }}</h2>
-            <p style="margin: 0.5rem 0 0 0; opacity: 0.9;">Total Clinicians</p>
-        </div>
+        <a href="{{ url_for('admin_clinicians') }}" style="text-decoration: none;">
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 2rem; border-radius: 12px; color: white; cursor: pointer; transition: transform 0.3s, box-shadow 0.3s;" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 20px rgba(102, 126, 234, 0.4)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+                <i class="fas fa-user-md" style="font-size: 2.5rem; margin-bottom: 1rem;"></i>
+                <h2 style="margin: 0; font-size: 2.5rem;">{{ total_users }}</h2>
+                <p style="margin: 0.5rem 0 0 0; opacity: 0.9;">Total Clinicians</p>
+            </div>
+        </a>
 
-        <div style="background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%); padding: 2rem; border-radius: 12px; color: white;">
-            <i class="fas fa-users" style="font-size: 2.5rem; margin-bottom: 1rem;"></i>
-            <h2 style="margin: 0; font-size: 2.5rem;">{{ total_patients }}</h2>
-            <p style="margin: 0.5rem 0 0 0; opacity: 0.9;">Total Patients</p>
-        </div>
+        <a href="{{ url_for('admin_patients') }}" style="text-decoration: none;">
+            <div style="background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%); padding: 2rem; border-radius: 12px; color: white; cursor: pointer; transition: transform 0.3s, box-shadow 0.3s;" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 20px rgba(74, 144, 226, 0.4)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+                <i class="fas fa-users" style="font-size: 2.5rem; margin-bottom: 1rem;"></i>
+                <h2 style="margin: 0; font-size: 2.5rem;">{{ total_patients }}</h2>
+                <p style="margin: 0.5rem 0 0 0; opacity: 0.9;">Total Patients</p>
+            </div>
+        </a>
 
-        <div style="background: linear-gradient(135deg, #90EE90 0%, #76c776 100%); padding: 2rem; border-radius: 12px; color: white;">
-            <i class="fas fa-chart-line" style="font-size: 2.5rem; margin-bottom: 1rem;"></i>
-            <h2 style="margin: 0; font-size: 2.5rem;">{{ total_analyses }}</h2>
-            <p style="margin: 0.5rem 0 0 0; opacity: 0.9;">Total Analyses</p>
-        </div>
+        <a href="{{ url_for('reports') }}" style="text-decoration: none;">
+            <div style="background: linear-gradient(135deg, #90EE90 0%, #76c776 100%); padding: 2rem; border-radius: 12px; color: white; cursor: pointer; transition: transform 0.3s, box-shadow 0.3s;" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 20px rgba(144, 238, 144, 0.4)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+                <i class="fas fa-chart-line" style="font-size: 2.5rem; margin-bottom: 1rem;"></i>
+                <h2 style="margin: 0; font-size: 2.5rem;">{{ total_analyses }}</h2>
+                <p style="margin: 0.5rem 0 0 0; opacity: 0.9;">Total Analyses</p>
+            </div>
+        </a>
     </div>
 
     <!-- Quick Actions -->

@@ -1,0 +1,465 @@
+{% extends "base.html" %}
+
+{% block title %}Clinical Guidelines - Respiratory Diseases{% endblock %}
+
+{% block content %}
+<div class="main-container">
+    <div class="page-header">
+        <h1><i class="fas fa-book-medical"></i> Clinical Guidelines</h1>
+        <p class="page-subtitle">Comprehensive information on respiratory diseases</p>
+    </div>
+
+    <!-- Search/Filter Box -->
+    <div style="margin-bottom: 2rem;">
+        <input type="text" id="searchBox" placeholder="Search diseases, symptoms, or treatments..."
+               style="width: 100%; padding: 1rem; border: 2px solid #E1E8ED; border-radius: 12px; font-size: 1rem;">
+    </div>
+
+    <!-- Disease Cards -->
+    <div id="diseaseContainer">
+        <!-- Asthma -->
+        <div class="disease-card" data-disease="asthma" id="asthma">
+            <div class="disease-header" onclick="toggleDisease('asthma')">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <div class="disease-icon-badge" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                        <i class="fas fa-lungs"></i>
+                    </div>
+                    <div>
+                        <h2 style="margin: 0; color: var(--text-dark);">Asthma</h2>
+                        <p style="margin: 0.25rem 0 0 0; color: var(--text-light); font-size: 0.9rem;">Chronic inflammatory airway disease</p>
+                    </div>
+                </div>
+                <i class="fas fa-chevron-down disease-chevron" id="asthma-chevron"></i>
+            </div>
+            <div class="disease-content" id="asthma-content" style="display: none;">
+                <div class="disease-section">
+                    <h3><i class="fas fa-info-circle"></i> Description</h3>
+                    <p>Asthma is a chronic inflammatory disease that causes recurrent narrowing and swelling of the airways, often triggered by exercise, allergens, or irritants. Asthma is common in both children and adults.</p>
+                </div>
+
+                <div class="disease-section">
+                    <h3><i class="fas fa-heartbeat"></i> Key Symptoms</h3>
+                    <ul class="symptom-list">
+                        <li><i class="fas fa-check-circle"></i> Wheezing (especially during exhalation)</li>
+                        <li><i class="fas fa-check-circle"></i> Shortness of breath</li>
+                        <li><i class="fas fa-check-circle"></i> Chest tightness</li>
+                        <li><i class="fas fa-check-circle"></i> Recurrent or night-time coughing</li>
+                    </ul>
+                </div>
+
+                <div class="disease-section advice-section">
+                    <h3><i class="fas fa-shield-alt"></i> Advice & Precautions</h3>
+                    <ul class="advice-list">
+                        <li><strong>Asthma Action Plan:</strong> Work with your healthcare provider to develop a written asthma action plan</li>
+                        <li><strong>Avoid Triggers:</strong> Identify and avoid known triggers (e.g., smoking, allergens)</li>
+                        <li><strong>Medication Adherence:</strong> Take medications as prescribed; do not stop long-term inhalers even if you feel well</li>
+                        <li><strong>Controller Medications:</strong> Use controller medications (inhaled corticosteroids; e.g., beclomethasone, budesonide) daily</li>
+                        <li><strong>Quick-Relief Inhaler:</strong> Keep a quick-relief inhaler (short-acting bronchodilator) for sudden symptoms</li>
+                        <li><strong>Monitor Symptoms:</strong> If symptoms worsen or rescue inhaler use increases, seek medical advice promptly</li>
+                        <li><strong>Regular Check-ups:</strong> Attend routine check-ups; regular lung function monitoring is important</li>
+                        <li><strong class="emergency-text">Emergency Care:</strong> Seek emergency care if you have severe shortness of breath or can't speak in full sentences</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- COPD -->
+        <div class="disease-card" data-disease="copd" id="copd">
+            <div class="disease-header" onclick="toggleDisease('copd')">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <div class="disease-icon-badge" style="background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%);">
+                        <i class="fas fa-wind"></i>
+                    </div>
+                    <div>
+                        <h2 style="margin: 0; color: var(--text-dark);">COPD</h2>
+                        <p style="margin: 0.25rem 0 0 0; color: var(--text-light); font-size: 0.9rem;">Chronic Obstructive Pulmonary Disease</p>
+                    </div>
+                </div>
+                <i class="fas fa-chevron-down disease-chevron" id="copd-chevron"></i>
+            </div>
+            <div class="disease-content" id="copd-content" style="display: none;">
+                <div class="disease-section">
+                    <h3><i class="fas fa-info-circle"></i> Description</h3>
+                    <p>COPD covers progressive lung diseases—mainly chronic bronchitis and emphysema—that cause airflow blockage and breathing-related problems, most often due to smoking.</p>
+                </div>
+
+                <div class="disease-section">
+                    <h3><i class="fas fa-heartbeat"></i> Key Symptoms</h3>
+                    <ul class="symptom-list">
+                        <li><i class="fas fa-check-circle"></i> Persistent cough with phlegm</li>
+                        <li><i class="fas fa-check-circle"></i> Shortness of breath, worsening over time</li>
+                        <li><i class="fas fa-check-circle"></i> Wheezing</li>
+                        <li><i class="fas fa-check-circle"></i> Frequent chest infections</li>
+                        <li><i class="fas fa-check-circle"></i> Tiredness</li>
+                    </ul>
+                </div>
+
+                <div class="disease-section advice-section">
+                    <h3><i class="fas fa-shield-alt"></i> Advice & Precautions</h3>
+                    <ul class="advice-list">
+                        <li><strong class="emergency-text">Stop Smoking:</strong> This is the most important measure</li>
+                        <li><strong>Medication Compliance:</strong> Follow inhaler and medication instructions strictly; common drugs include bronchodilators and inhaled corticosteroids</li>
+                        <li><strong>Pulmonary Rehabilitation:</strong> Attend all scheduled pulmonary rehabilitation or support programs</li>
+                        <li><strong>Stay Active:</strong> Stay active within your limits (walking, gentle activity)</li>
+                        <li><strong>Vaccinations:</strong> Get routine vaccinations (Flu, COVID-19, pneumonia)</li>
+                        <li><strong>Supplemental Oxygen:</strong> If prescribed, use supplemental oxygen as directed</li>
+                        <li><strong>Report Changes:</strong> Report sudden symptom worsening or signs of infection to your healthcare provider immediately</li>
+                        <li><strong>Avoid Irritants:</strong> Prevent flare-ups by avoiding respiratory irritants (dust, smoke, fumes)</li>
+                        <li><strong>Advanced Care Planning:</strong> Discuss advanced care plans with your provider for severe COPD</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pneumonia -->
+        <div class="disease-card" data-disease="pneumonia" id="pneumonia">
+            <div class="disease-header" onclick="toggleDisease('pneumonia')">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <div class="disease-icon-badge" style="background: linear-gradient(135deg, #90EE90 0%, #76c776 100%);">
+                        <i class="fas fa-virus"></i>
+                    </div>
+                    <div>
+                        <h2 style="margin: 0; color: var(--text-dark);">Pneumonia</h2>
+                        <p style="margin: 0.25rem 0 0 0; color: var(--text-light); font-size: 0.9rem;">Lung infection causing inflammation</p>
+                    </div>
+                </div>
+                <i class="fas fa-chevron-down disease-chevron" id="pneumonia-chevron"></i>
+            </div>
+            <div class="disease-content" id="pneumonia-content" style="display: none;">
+                <div class="disease-section">
+                    <h3><i class="fas fa-info-circle"></i> Description</h3>
+                    <p>Pneumonia is an infection of the lungs' air sacs (alveoli), causing inflammation, fluid or pus build-up, and impaired breathing. It can be caused by bacteria, viruses, or fungi.</p>
+                </div>
+
+                <div class="disease-section">
+                    <h3><i class="fas fa-heartbeat"></i> Key Symptoms</h3>
+                    <ul class="symptom-list">
+                        <li><i class="fas fa-check-circle"></i> High fever and chills</li>
+                        <li><i class="fas fa-check-circle"></i> Productive cough (sometimes with yellow/green/rust sputum)</li>
+                        <li><i class="fas fa-check-circle"></i> Chest pain, worse with breathing or coughing</li>
+                        <li><i class="fas fa-check-circle"></i> Shortness of breath</li>
+                        <li><i class="fas fa-check-circle"></i> Fatigue, loss of appetite</li>
+                    </ul>
+                </div>
+
+                <div class="disease-section advice-section">
+                    <h3><i class="fas fa-shield-alt"></i> Advice & Precautions</h3>
+                    <ul class="advice-list">
+                        <li><strong>Complete Antibiotics:</strong> Take all antibiotics as prescribed if bacterial pneumonia</li>
+                        <li><strong>Finish Treatment:</strong> Do not stop antibiotics early, even if you feel better</li>
+                        <li><strong>Rest & Hydration:</strong> Get plenty of rest and drink enough fluids</li>
+                        <li><strong>Pain/Fever Management:</strong> Use acetaminophen or ibuprofen for pain/fever as advised</li>
+                        <li><strong>Productive Cough:</strong> Cough is the body's way to clear infection—do not suppress coughing unless instructed</li>
+                        <li><strong class="emergency-text">Emergency Care:</strong> Call a doctor if symptoms worsen, you develop difficulty breathing, chest pain, or confusion</li>
+                        <li><strong>Vaccination:</strong> Prevent future pneumonia by getting recommended vaccines</li>
+                        <li><strong>Avoid Smoking:</strong> Avoid smoking and stay away from others while infectious</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bronchiectasis -->
+        <div class="disease-card" data-disease="bronchiectasis" id="bronchiectasis">
+            <div class="disease-header" onclick="toggleDisease('bronchiectasis')">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <div class="disease-icon-badge" style="background: linear-gradient(135deg, #14B8A6 0%, #0E9F89 100%);">
+                        <i class="fas fa-procedures"></i>
+                    </div>
+                    <div>
+                        <h2 style="margin: 0; color: var(--text-dark);">Bronchiectasis</h2>
+                        <p style="margin: 0.25rem 0 0 0; color: var(--text-light); font-size: 0.9rem;">Chronic airway widening and mucus build-up</p>
+                    </div>
+                </div>
+                <i class="fas fa-chevron-down disease-chevron" id="bronchiectasis-chevron"></i>
+            </div>
+            <div class="disease-content" id="bronchiectasis-content" style="display: none;">
+                <div class="disease-section">
+                    <h3><i class="fas fa-info-circle"></i> Description</h3>
+                    <p>Bronchiectasis is a long-term condition where the airways (bronchi) widen abnormally, leading to mucus build-up, recurrent infections, and permanent airway changes.</p>
+                </div>
+
+                <div class="disease-section">
+                    <h3><i class="fas fa-heartbeat"></i> Key Symptoms</h3>
+                    <ul class="symptom-list">
+                        <li><i class="fas fa-check-circle"></i> Daily cough with large amounts of mucus (often yellow or green)</li>
+                        <li><i class="fas fa-check-circle"></i> Frequent chest infections</li>
+                        <li><i class="fas fa-check-circle"></i> Shortness of breath</li>
+                        <li><i class="fas fa-check-circle"></i> Wheezing, chest pain</li>
+                        <li><i class="fas fa-check-circle"></i> Fatigue; clubbing (rare)</li>
+                    </ul>
+                </div>
+
+                <div class="disease-section advice-section">
+                    <h3><i class="fas fa-shield-alt"></i> Advice & Precautions</h3>
+                    <ul class="advice-list">
+                        <li><strong>Airway Clearance:</strong> Perform daily airway clearance (chest physiotherapy, postural drainage) to remove mucus</li>
+                        <li><strong>Antibiotics:</strong> Take prescribed antibiotics fully (oral, inhaled, or intravenous, depending on severity)</li>
+                        <li><strong>Bronchodilators:</strong> Use bronchodilators or inhaled steroids as directed</li>
+                        <li><strong>Hydration:</strong> Stay hydrated to help thin mucus</li>
+                        <li><strong>Vaccinations:</strong> Stay current on vaccines (flu, COVID-19, pneumonia)</li>
+                        <li><strong>Monitor Symptoms:</strong> Monitor for worsening cough, blood in sputum, or fever—call your healthcare provider if these develop</li>
+                        <li><strong>Pulmonary Rehabilitation:</strong> Participate in pulmonary rehabilitation if suggested</li>
+                        <li><strong>Regular Monitoring:</strong> Maintain regular check-ups to monitor lung function and prevent complications</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bronchitis -->
+        <div class="disease-card" data-disease="bronchitis" id="bronchitis">
+            <div class="disease-header" onclick="toggleDisease('bronchitis')">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <div class="disease-icon-badge" style="background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);">
+                        <i class="fas fa-head-side-cough"></i>
+                    </div>
+                    <div>
+                        <h2 style="margin: 0; color: var(--text-dark);">Acute Bronchitis</h2>
+                        <p style="margin: 0.25rem 0 0 0; color: var(--text-light); font-size: 0.9rem;">Sudden inflammation of airways</p>
+                    </div>
+                </div>
+                <i class="fas fa-chevron-down disease-chevron" id="bronchitis-chevron"></i>
+            </div>
+            <div class="disease-content" id="bronchitis-content" style="display: none;">
+                <div class="disease-section">
+                    <h3><i class="fas fa-info-circle"></i> Description</h3>
+                    <p>Acute bronchitis is a sudden inflammation of the larger airways, typically caused by viral infections and often following a cold or flu.</p>
+                </div>
+
+                <div class="disease-section">
+                    <h3><i class="fas fa-heartbeat"></i> Key Symptoms</h3>
+                    <ul class="symptom-list">
+                        <li><i class="fas fa-check-circle"></i> Cough (lasting up to three weeks)</li>
+                        <li><i class="fas fa-check-circle"></i> Mild fever</li>
+                        <li><i class="fas fa-check-circle"></i> Chest discomfort</li>
+                        <li><i class="fas fa-check-circle"></i> Mild shortness of breath</li>
+                    </ul>
+                </div>
+
+                <div class="disease-section advice-section">
+                    <h3><i class="fas fa-shield-alt"></i> Advice & Precautions</h3>
+                    <ul class="advice-list">
+                        <li><strong>Rest & Fluids:</strong> Get plenty of rest and drink fluids</li>
+                        <li><strong>Humidifiers:</strong> Use humidifiers and avoid smoking or respiratory irritants</li>
+                        <li><strong>Pain Relief:</strong> Over-the-counter pain relievers can ease discomfort</li>
+                        <li><strong>Avoid Cough Suppressants:</strong> Cough suppressants generally not recommended; coughing is important to clear mucus</li>
+                        <li><strong>No Routine Antibiotics:</strong> Most cases resolve without antibiotics—do not seek or use antibiotics unless specifically prescribed for bacterial infection</li>
+                        <li><strong>Medical Attention:</strong> If you have difficulty breathing, persistent high fever, or symptoms persist beyond three weeks, contact your doctor</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Healthy -->
+        <div class="disease-card" data-disease="healthy" id="healthy">
+            <div class="disease-header" onclick="toggleDisease('healthy')">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <div class="disease-icon-badge" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%);">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <div>
+                        <h2 style="margin: 0; color: var(--text-dark);">Healthy</h2>
+                        <p style="margin: 0.25rem 0 0 0; color: var(--text-light); font-size: 0.9rem;">Normal respiratory function</p>
+                    </div>
+                </div>
+                <i class="fas fa-chevron-down disease-chevron" id="healthy-chevron"></i>
+            </div>
+            <div class="disease-content" id="healthy-content" style="display: none;">
+                <div class="disease-section">
+                    <h3><i class="fas fa-info-circle"></i> Description</h3>
+                    <p>Healthy respiratory status indicates normal lung function with clear airways and no signs of respiratory disease or infection.</p>
+                </div>
+
+                <div class="disease-section advice-section">
+                    <h3><i class="fas fa-shield-alt"></i> Maintaining Healthy Lungs</h3>
+                    <ul class="advice-list">
+                        <li><strong>Don't Smoke:</strong> Avoid smoking and secondhand smoke exposure</li>
+                        <li><strong>Regular Exercise:</strong> Engage in regular physical activity to strengthen respiratory muscles</li>
+                        <li><strong>Good Posture:</strong> Maintain good posture to allow full lung expansion</li>
+                        <li><strong>Clean Air:</strong> Avoid air pollution and indoor pollutants</li>
+                        <li><strong>Vaccinations:</strong> Stay up to date with respiratory vaccinations (flu, COVID-19, pneumonia)</li>
+                        <li><strong>Breathing Exercises:</strong> Practice deep breathing exercises</li>
+                        <li><strong>Regular Check-ups:</strong> Schedule regular health check-ups</li>
+                        <li><strong>Hydration:</strong> Stay well hydrated</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.disease-card {
+    background: white;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    overflow: hidden;
+    transition: box-shadow 0.3s;
+}
+
+.disease-card:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+
+.disease-header {
+    padding: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #F8F9FA;
+    border-bottom: 2px solid #E1E8ED;
+    transition: background 0.3s;
+}
+
+.disease-header:hover {
+    background: #E9ECEF;
+}
+
+.disease-icon-badge {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+}
+
+.disease-chevron {
+    color: var(--primary-blue);
+    transition: transform 0.3s;
+    font-size: 1.2rem;
+}
+
+.disease-chevron.rotated {
+    transform: rotate(180deg);
+}
+
+.disease-content {
+    padding: 2rem;
+}
+
+.disease-section {
+    margin-bottom: 2rem;
+}
+
+.disease-section:last-child {
+    margin-bottom: 0;
+}
+
+.disease-section h3 {
+    color: var(--primary-blue);
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.disease-section p {
+    color: var(--text-dark);
+    line-height: 1.6;
+    font-size: 1.05rem;
+}
+
+.symptom-list, .advice-list {
+    list-style: none;
+    padding: 0;
+}
+
+.symptom-list li, .advice-list li {
+    margin-bottom: 0.75rem;
+    color: var(--text-dark);
+    line-height: 1.6;
+    font-size: 1.02rem;
+}
+
+.symptom-list li i {
+    color: #10B981;
+    margin-right: 0.5rem;
+}
+
+.advice-list li {
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.advice-list li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: var(--primary-blue);
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.advice-section {
+    background: linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border-left: 4px solid var(--primary-blue);
+}
+
+.emergency-text {
+    color: #DC2626;
+}
+
+@media print {
+    .disease-header {
+        cursor: default;
+    }
+
+    .disease-content {
+        display: block !important;
+    }
+
+    .disease-chevron {
+        display: none;
+    }
+}
+</style>
+
+<script>
+function toggleDisease(diseaseId) {
+    const content = document.getElementById(diseaseId + '-content');
+    const chevron = document.getElementById(diseaseId + '-chevron');
+
+    if (content.style.display === 'none') {
+        content.style.display = 'block';
+        chevron.classList.add('rotated');
+    } else {
+        content.style.display = 'none';
+        chevron.classList.remove('rotated');
+    }
+}
+
+// Search functionality
+document.getElementById('searchBox').addEventListener('input', function(e) {
+    const searchTerm = e.target.value.toLowerCase();
+    const diseaseCards = document.querySelectorAll('.disease-card');
+
+    diseaseCards.forEach(card => {
+        const text = card.textContent.toLowerCase();
+        if (text.includes(searchTerm)) {
+            card.style.display = 'block';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+});
+
+// Auto-expand disease from URL hash
+window.addEventListener('load', function() {
+    const hash = window.location.hash.substring(1);
+    if (hash) {
+        const diseaseCard = document.getElementById(hash);
+        if (diseaseCard) {
+            toggleDisease(hash);
+            diseaseCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }
+});
+</script>
+{% endblock %}

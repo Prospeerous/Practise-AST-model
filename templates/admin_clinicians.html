@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Clinicians{% endblock %}
+
+{% block content %}
+<div class="main-container">
+    <div style="margin-bottom: 1.5rem;">
+        <a href="{{ url_for('admin_dashboard') }}" style="color: #7F8C9D; text-decoration: none;">
+            <i class="fas fa-arrow-left"></i> Back to Admin Dashboard
+        </a>
+    </div>
+
+    <div class="page-header">
+        <h1><i class="fas fa-user-md"></i> All Clinicians in System</h1>
+        <p class="page-subtitle">View all registered clinicians and their statistics</p>
+    </div>
+
+    <div class="recent-section">
+        <div class="table-responsive" style="background: white; border-radius: 12px; padding: 1.5rem; overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr style="background: #F8F9FA; border-bottom: 2px solid #E1E8ED;">
+                        <th style="padding: 1rem; text-align: left;">Clinician Name</th>
+                        <th style="padding: 1rem; text-align: left;">Contact Information</th>
+                        <th style="padding: 1rem; text-align: left;">Patients</th>
+                        <th style="padding: 1rem; text-align: left;">Total Analyses</th>
+                        <th style="padding: 1rem; text-align: left;">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if clinician_stats %}
+                        {% for stat in clinician_stats %}
+                        <tr style="border-bottom: 1px solid #E1E8ED;">
+                            <td style="padding: 1rem;">
+                                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                    <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 1.1rem;">
+                                        {{ stat.clinician.username[0].upper() }}
+                                    </div>
+                                    <strong style="font-size: 1.05rem;">{{ stat.clinician.username }}</strong>
+                                </div>
+                            </td>
+                            <td style="padding: 1rem;">
+                                <div style="display: flex; flex-direction: column; gap: 0.25rem;">
+                                    <div style="color: var(--text-dark); font-size: 0.95rem;">
+                                        <i class="fas fa-envelope" style="color: var(--primary-blue); width: 16px;"></i> {{ stat.clinician.email }}
+                                    </div>
+                                    <div style="color: var(--text-light); font-size: 0.9rem;">
+                                        <i class="fas fa-phone" style="color: var(--primary-blue); width: 16px;"></i>
+                                        {% if stat.clinician.phone_number %}
+                                            {{ stat.clinician.phone_number }}
+                                        {% else %}
+                                            <span style="font-style: italic;">Not provided</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </td>
+                            <td style="padding: 1rem;">
+                                <span style="background: #E3F2FD; color: #1976D2; padding: 0.35rem 0.85rem; border-radius: 12px; font-size: 0.9rem; font-weight: 600;">
+                                    {{ stat.patient_count }} patients
+                                </span>
+                            </td>
+                            <td style="padding: 1rem;">
+                                <span style="background: #E8F5E9; color: #388E3C; padding: 0.35rem 0.85rem; border-radius: 12px; font-size: 0.9rem; font-weight: 600;">
+                                    {{ stat.analysis_count }} analyses
+                                </span>
+                            </td>
+                            <td style="padding: 1rem;">
+                                <span style="background: #4CAF50; color: white; padding: 0.35rem 0.85rem; border-radius: 12px; font-size: 0.85rem; font-weight: 600;">
+                                    <i class="fas fa-check-circle"></i> Active
+                                </span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="5" style="padding: 2rem; text-align: center; color: var(--text-light);">
+                                <i class="fas fa-info-circle" style="font-size: 2rem; margin-bottom: 1rem; color: var(--primary-blue);"></i>
+                                <p style="margin: 0;">No clinicians registered in the system yet.</p>
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Summary Statistics -->
+        <div style="margin-top: 2rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+            <div style="background: white; padding: 1.5rem; border-radius: 12px; border-left: 4px solid #667eea;">
+                <h3 style="margin: 0 0 0.5rem 0; color: var(--text-light); font-size: 0.9rem; font-weight: 500;">
+                    Total Clinicians
+                </h3>
+                <p style="margin: 0; font-size: 2rem; font-weight: 700; color: var(--text-dark);">
+                    {{ clinician_stats|length }}
+                </p>
+            </div>
+
+            <div style="background: white; padding: 1.5rem; border-radius: 12px; border-left: 4px solid #4A90E2;">
+                <h3 style="margin: 0 0 0.5rem 0; color: var(--text-light); font-size: 0.9rem; font-weight: 500;">
+                    Average Patients per Clinician
+                </h3>
+                <p style="margin: 0; font-size: 2rem; font-weight: 700; color: var(--text-dark);">
+                    {% if clinician_stats|length > 0 %}
+                        {{ "%.1f"|format((clinician_stats|sum(attribute='patient_count')) / (clinician_stats|length)) }}
+                    {% else %}
+                        0
+                    {% endif %}
+                </p>
+            </div>
+
+            <div style="background: white; padding: 1.5rem; border-radius: 12px; border-left: 4px solid #90EE90;">
+                <h3 style="margin: 0 0 0.5rem 0; color: var(--text-light); font-size: 0.9rem; font-weight: 500;">
+                    Total System Analyses
+                </h3>
+                <p style="margin: 0; font-size: 2rem; font-weight: 700; color: var(--text-dark);">
+                    {{ clinician_stats|sum(attribute='analysis_count') }}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

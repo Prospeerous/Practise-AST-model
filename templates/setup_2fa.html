@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% block title %}Setup Two-Factor Authentication{% endblock %}
+
+{% block content %}
+<div class="settings-center-wrapper">
+    <div class="settings-card">
+        <div class="page-header">
+            <h1>
+                <i class="fas fa-shield-alt" style="color:var(--primary-blue);"></i>
+                Setup Two-Factor Authentication
+            </h1>
+            <p class="page-subtitle">Add an extra layer of security to your account</p>
+        </div>
+
+        <div style="background: #E3F2FD; padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem; border-left: 4px solid var(--primary-blue);">
+            <h3 style="margin-top: 0; color: var(--primary-blue);">
+                <i class="fas fa-info-circle"></i> What is 2FA?
+            </h3>
+            <p style="margin: 0; color: var(--text-dark);">
+                Two-Factor Authentication (2FA) adds an extra layer of security to your account.
+                You'll need both your password and a time-based code from your authenticator app to log in.
+            </p>
+        </div>
+
+        <div style="margin-bottom: 2rem;">
+            <h3 style="font-size: 1.2rem; color: var(--text-dark); margin-bottom: 1rem;">
+                <i class="fas fa-mobile-alt" style="color: var(--primary-blue);"></i> Step 1: Install Authenticator App
+            </h3>
+            <p style="color: var(--text-dark); margin-bottom: 1rem;">
+                Download and install an authenticator app on your mobile device:
+            </p>
+            <ul style="color: var(--text-dark); margin-bottom: 1.5rem;">
+                <li><strong>Google Authenticator</strong> (iOS, Android)</li>
+                <li><strong>Microsoft Authenticator</strong> (iOS, Android)</li>
+                <li><strong>Authy</strong> (iOS, Android, Desktop)</li>
+            </ul>
+        </div>
+
+        <div style="margin-bottom: 2rem;">
+            <h3 style="font-size: 1.2rem; color: var(--text-dark); margin-bottom: 1rem;">
+                <i class="fas fa-qrcode" style="color: var(--primary-blue);"></i> Step 2: Scan QR Code
+            </h3>
+            <p style="color: var(--text-dark); margin-bottom: 1rem;">
+                Open your authenticator app and scan this QR code:
+            </p>
+
+            <div style="text-align: center; background: white; padding: 2rem; border-radius: 12px; margin-bottom: 1rem;">
+                <img src="data:image/png;base64,{{ qr_code_b64 }}" alt="2FA QR Code" style="max-width: 300px; height: auto;" />
+            </div>
+
+            <div style="background: #FFF3E0; padding: 1rem; border-radius: 8px; border-left: 4px solid #FF9800;">
+                <p style="margin: 0; color: var(--text-dark); font-size: 0.95rem;">
+                    <i class="fas fa-exclamation-triangle" style="color: #FF9800;"></i>
+                    <strong>Can't scan the code?</strong> Manually enter this secret key in your app:
+                </p>
+                <code style="display: block; margin-top: 0.5rem; padding: 0.75rem; background: white; border-radius: 4px; font-size: 1.1rem; text-align: center; letter-spacing: 0.1em;">
+                    {{ totp_secret }}
+                </code>
+            </div>
+        </div>
+
+        <form method="POST">
+            <div style="margin-bottom: 2rem;">
+                <h3 style="font-size: 1.2rem; color: var(--text-dark); margin-bottom: 1rem;">
+                    <i class="fas fa-key" style="color: var(--primary-blue);"></i> Step 3: Verify Code
+                </h3>
+                <p style="color: var(--text-dark); margin-bottom: 1rem;">
+                    Enter the 6-digit code from your authenticator app:
+                </p>
+
+                <div class="form-group">
+                    <input type="text" id="verification_code" name="verification_code" required
+                           maxlength="6" pattern="[0-9]{6}" autocomplete="off"
+                           style="width: 100%; padding: 1rem; border: 2px solid #E1E8ED; border-radius: 8px; font-size: 1.5rem; text-align: center; letter-spacing: 0.5em; font-family: monospace;"
+                           placeholder="000000">
+                    <small style="color: var(--text-light); font-size: 0.85rem; display: block; margin-top: 0.5rem; text-align: center;">
+                        Enter the 6-digit code from your authenticator app
+                    </small>
+                </div>
+            </div>
+
+            <div class="form-actions" style="text-align: center;">
+                <button type="submit" class="upload-btn" style="padding: 1rem 2.5rem; font-size: 1.1rem;">
+                    <i class="fas fa-check-circle"></i> Enable 2FA
+                </button>
+                <a href="{{ url_for('settings') }}" class="btn-secondary" style="display: inline-block; margin-left: 1rem; padding: 1rem 2.5rem; font-size: 1.1rem; text-decoration: none; background: #E1E8ED; color: var(--text-dark); border-radius: 8px;">
+                    <i class="fas fa-times"></i> Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+// Auto-format verification code input
+document.getElementById('verification_code').addEventListener('input', function(e) {
+    // Only allow digits
+    this.value = this.value.replace(/[^0-9]/g, '');
+    // Limit to 6 digits
+    if (this.value.length > 6) {
+        this.value = this.value.slice(0, 6);
+    }
+});
+
+// Auto-submit when 6 digits are entered
+document.getElementById('verification_code').addEventListener('input', function(e) {
+    if (this.value.length === 6) {
+        // Optional: Auto-submit the form
+        // this.form.submit();
+    }
+});
+</script>
+{% endblock %}

@@ -6,9 +6,9 @@
 <div class="results-center-wrapper">
   <div class="results-card">
     <div class="page-header">
-      <h1>Analysis Results</h1>
+      <h1>Respiratory Sound Analysis Report</h1>
       <p class="page-subtitle" style="color: #555; background: #f5f5f5; padding: 0.5em 1em; border-radius: 4px;">
-        Detailed analysis of lung sound recording
+        AI-Assisted Diagnostic Analysis
       </p>
     </div>
     <div class="result-section">
@@ -49,6 +49,31 @@
         </p>
       </div>
       <hr class="section-divider">
+
+      <!-- Visualizations Section -->
+      <div class="visualization-group">
+        <h3><span class="visualization-group-icon">📊</span> Audio Visualizations</h3>
+        <div class="visualization-container">
+          {% if waveform_path %}
+          <div class="visualization-item">
+            <h4>Audio Waveform</h4>
+            <img src="{{ url_for('static', filename=waveform_path) }}" alt="Waveform Plot" class="visualization-img">
+          </div>
+          {% endif %}
+
+          {% if spectrogram_path %}
+          <div class="visualization-item">
+            <h4>Mel Spectrogram (Frequency Analysis)</h4>
+            <img src="{{ url_for('static', filename=spectrogram_path) }}" alt="Mel Spectrogram Plot" class="visualization-img">
+          </div>
+          {% endif %}
+
+          {% if not waveform_path and not spectrogram_path %}
+          <p style="text-align: center; color: #666;">Visualizations could not be generated for this recording.</p>
+          {% endif %}
+        </div>
+      </div>
+      <hr class="section-divider">
       
       <div class="info-group">
         <h3><span class="info-group-icon">ℹ️</span> Recording Information</h3>
@@ -63,16 +88,47 @@
           <li><strong>File Size:</strong> {{ file_size }}</li>
         </ul>
       </div>
+      <hr class="section-divider">
+
+      <div class="info-group">
+        <h3><span class="info-group-icon">👨‍⚕️</span> Clinician Information</h3>
+        <ul class="info-list">
+          <li><strong>Clinician Name:</strong> Dr. {{ clinician_name }}</li>
+          <li><strong>Email:</strong> {{ clinician_email }}</li>
+          <li><strong>Phone:</strong> {{ clinician_phone }}</li>
+        </ul>
+      </div>
     </div>
     
     <div class="action-buttons" style="text-align:center; margin-top:2rem;">
-      <button class="btn-primary" onclick="window.print()">
-        <i class="fas fa-print"></i> Print Report
+      <button class="btn-primary" onclick="window.print()" style="padding: 1rem 2.5rem; font-size: 1.1rem;">
+        <i class="fas fa-print"></i> Print Professional Report
       </button>
-      <button class="btn-secondary" onclick="location.href='{{ url_for('dashboard') }}'" style="margin-left:1rem;">
+      <button class="btn-secondary" onclick="location.href='{{ url_for('clinical_guidelines') }}#{{ disease_diagnosis|lower }}'" style="margin-left:1rem; padding: 1rem 2.5rem; font-size: 1.1rem;">
+        <i class="fas fa-book-medical"></i> View Disease Guidelines
+      </button>
+      <button class="btn-secondary" onclick="location.href='{{ url_for('dashboard') }}'" style="margin-left:1rem; padding: 1rem 2.5rem; font-size: 1.1rem;">
         <i class="fas fa-home"></i> Back to Dashboard
       </button>
     </div>
+
+    <!-- Print-only footer information -->
+    <div class="print-footer" style="display: none;">
+      <div style="margin-top: 2cm; padding-top: 0.5cm; border-top: 2px solid #4A90E2; text-align: center; font-size: 10pt; color: #666;">
+        <p><strong>Report Generated:</strong> {{ analysis_date }}</p>
+        <p><strong>System:</strong> AST Lung Sound Analysis & Diagnosis Platform</p>
+        <p style="font-style: italic; margin-top: 0.3cm;">This report is computer-generated and should be reviewed by a qualified medical professional.</p>
+      </div>
+    </div>
   </div>
 </div>
+
+<style>
+@media print {
+  .print-footer {
+    display: block !important;
+    page-break-inside: avoid !important;
+  }
+}
+</style>
 {% endblock %}

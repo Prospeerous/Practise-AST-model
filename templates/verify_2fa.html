@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Two-Factor Authentication{% endblock %}
+
+{% block content %}
+<div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 2rem 0;">
+    <div style="background: white; padding: 3rem; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); width: 100%; max-width: 450px;">
+        <div style="text-align: center; margin-bottom: 2rem;">
+            <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 50%; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-shield-alt" style="font-size: 2.5rem; color: white;"></i>
+            </div>
+            <h1 style="font-size: 1.8rem; color: #2C3E50; margin-bottom: 0.5rem;">Two-Factor Authentication</h1>
+            <p style="color: #7F8C9D;">Enter the 6-digit code from your authenticator app</p>
+        </div>
+
+        <form method="POST" action="{{ url_for('verify_2fa') }}">
+            <div style="margin-bottom: 1.5rem;">
+                <input type="text" id="verification_code" name="verification_code" required
+                       maxlength="6" pattern="[0-9]{6}" autocomplete="off"
+                       style="width: 100%; padding: 1.5rem; border: 2px solid #E1E8ED; border-radius: 8px; font-size: 2rem; text-align: center; letter-spacing: 0.5em; font-family: monospace;"
+                       placeholder="000000" autofocus>
+                <small style="color: #7F8C9D; font-size: 0.85rem; display: block; margin-top: 0.5rem; text-align: center;">
+                    The code changes every 30 seconds
+                </small>
+            </div>
+
+            <button type="submit" style="width: 100%; padding: 1rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; font-weight: 600; font-size: 1rem; cursor: pointer;">
+                <i class="fas fa-sign-in-alt"></i> Verify & Login
+            </button>
+        </form>
+
+        <div style="text-align: center; margin-top: 1.5rem;">
+            <p style="color: #7F8C9D; margin-bottom: 0.5rem;">Having trouble?</p>
+            <a href="{{ url_for('logout') }}" style="color: #4A90E2; text-decoration: none; font-weight: 600;">
+                <i class="fas fa-arrow-left"></i> Back to Login
+            </a>
+        </div>
+
+        <div style="background: #FFF3E0; padding: 1rem; border-radius: 8px; margin-top: 1.5rem; border-left: 4px solid #FF9800;">
+            <p style="margin: 0; color: #856404; font-size: 0.9rem;">
+                <i class="fas fa-info-circle" style="color: #FF9800;"></i>
+                If you've lost access to your authenticator app, please contact your system administrator.
+            </p>
+        </div>
+    </div>
+</div>
+
+<script>
+// Auto-format verification code input
+document.getElementById('verification_code').addEventListener('input', function(e) {
+    // Only allow digits
+    this.value = this.value.replace(/[^0-9]/g, '');
+    // Limit to 6 digits
+    if (this.value.length > 6) {
+        this.value = this.value.slice(0, 6);
+    }
+});
+
+// Visual feedback for code entry
+document.getElementById('verification_code').addEventListener('input', function(e) {
+    if (this.value.length === 6) {
+        this.style.borderColor = '#4CAF50';
+    } else {
+        this.style.borderColor = '#E1E8ED';
+    }
+});
+</script>
+{% endblock %}

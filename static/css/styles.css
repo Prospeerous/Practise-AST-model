@@ -541,33 +541,44 @@ button:hover {
     align-items: center;
     justify-content: center;
     z-index: 1;
+    padding: 2rem 1rem;
 }
 .results-card {
-    padding: 3rem 2.5rem;
-    max-width: 600px;
+    padding: 3rem 3rem;
+    max-width: 1100px;
     width: 100%;
     background: rgba(255,255,255,0.97);
     box-shadow: 0 8px 32px rgba(118,75,162,0.16);
     border-radius: 24px;
     color: var(--text-dark);
-    margin: 2rem 0;
+    margin: 2rem auto;
 }
 .result-section {
     margin-top:1rem;
+}
+.disease-diagnosis-group {
+    margin-top: 1.2rem;
+}
+.disease-diagnosis-group h3 {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+}
+.disease-icon {
+    font-size: 1.3rem;
 }
 .result-type {
     display: flex;
     align-items: center;
     gap: 0.7rem;
-    font-size: 2.2rem;
+    font-size: 2.5rem;
     font-weight: 700;
     color: var(--primary-blue);
 }
 .result-type-icon {
-    font-size:2.4rem;
+    font-size:2.7rem;
 }
 .result-type-title {
-    font-size:2.1rem;
+    font-size:2.4rem;
 }
 .result-type-desc {
     font-size: 1.08rem;
@@ -577,8 +588,12 @@ button:hover {
 .confidence-group {
     margin-top: 1.2rem;
 }
+.confidence-group h3 {
+    font-size: 1.4rem;
+    margin-bottom: 0.8rem;
+}
 .confidence-score {
-    font-size: 2.1rem;
+    font-size: 2.5rem;
     font-weight: bold;
     color: var(--primary-purple);
     margin-bottom: 0.3rem;
@@ -590,11 +605,22 @@ button:hover {
 }
 .clinical-group {
     margin-top: 1.2rem;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+.clinical-group h3 {
+    font-size: 1.4rem;
+    margin-bottom: 0.8rem;
 }
 .clinical-group-icon {
     margin-right: 8px;
     color: var(--medical-teal);
-    font-size:1.25rem;
+    font-size:1.3rem;
+}
+.clinical-group strong {
+    font-size: 1.15rem;
+    display: block;
+    margin-bottom: 0.5rem;
 }
 .notice-group {
     margin-top: 1.2rem;
@@ -602,27 +628,38 @@ button:hover {
     border-radius: 10px;
     padding: 1.2rem 1rem;
     box-shadow: 0 2px 6px rgba(239,68,68,0.09);
+    font-size: 1.05rem;
+    line-height: 1.6;
+}
+.notice-group h3 {
+    font-size: 1.4rem;
+    margin-bottom: 0.8rem;
 }
 .notice-group-icon {
     color: #FFB300;
-    font-size:1.22rem;
+    font-size:1.3rem;
     margin-right:8px;
 }
 .info-group {
     margin-top:1.2rem;
 }
+.info-group h3 {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+}
 .info-group-icon {
     margin-right:8px;
     color: var(--primary-blue);
-    font-size:1.19rem;
+    font-size:1.3rem;
 }
 .info-list {
     list-style:none;
     padding:0;
-    font-size:1.05rem;
+    font-size:1.1rem;
+    line-height: 1.8;
 }
 .info-list li {
-    margin-bottom:6px;
+    margin-bottom:8px;
 }
 .btn-primary, .btn-secondary {
     background: linear-gradient(135deg,#667eea 0%,#764ba2 100%);
@@ -647,75 +684,340 @@ button:hover {
     margin:1.2rem 0;
 }
 
-/* SUPER AGGRESSIVE Print Styles */
+/* Professional Medical Report Print Styles */
 @media print {
-    /* Force everything visible */
+    /* Reset and basic setup */
     * {
-        visibility: visible !important;
-        display: block !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
     }
-    
-    /* Force white background everywhere */
-    *,
-    body,
-    div,
-    p,
-    h1, h2, h3, h4, h5, h6 {
-        background: white !important;
-        background-image: none !important;
-        background-color: white !important;
-        color: black !important;
-        -webkit-text-fill-color: black !important;
-    }
-    
+
     body {
         margin: 0 !important;
-        padding: 20px !important;
+        padding: 0 !important;
+        background: white !important;
+        color: black !important;
+        font-family: 'Times New Roman', serif !important;
+        font-size: 12pt !important;
     }
-    
+
     body::before {
         display: none !important;
     }
-    
-    /* Hide buttons and navigation */
+
+    /* Hide navigation and buttons */
     .top-navbar,
     .action-buttons,
     button,
     .btn-primary,
     .btn-secondary {
         display: none !important;
-        visibility: hidden !important;
-        height: 0 !important;
     }
-    
-    /* Force content visible */
-    .results-center-wrapper,
-    .results-card,
-    .result-section,
+
+    /* Page container */
+    .results-center-wrapper {
+        min-height: auto !important;
+        padding: 0 !important;
+        background: white !important;
+    }
+
+    .results-card {
+        max-width: 100% !important;
+        padding: 1.5cm 2cm !important;
+        margin: 0 !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        background: white !important;
+    }
+
+    /* Medical Report Header */
+    .page-header {
+        text-align: center !important;
+        margin-bottom: 1.5cm !important;
+        padding-bottom: 0.5cm !important;
+        border-bottom: 3px solid #4A90E2 !important;
+    }
+
+    .page-header h1 {
+        color: #2C3E50 !important;
+        font-size: 24pt !important;
+        font-weight: bold !important;
+        margin-bottom: 0.3cm !important;
+        text-shadow: none !important;
+        letter-spacing: 1px !important;
+    }
+
+    .page-subtitle {
+        color: #555 !important;
+        font-size: 11pt !important;
+        background: #f0f4f8 !important;
+        padding: 0.3cm 0.5cm !important;
+        border-radius: 3px !important;
+        display: inline-block !important;
+    }
+
+    /* Section headings */
+    h3 {
+        color: #2C3E50 !important;
+        font-size: 14pt !important;
+        font-weight: bold !important;
+        margin-top: 0.8cm !important;
+        margin-bottom: 0.4cm !important;
+        padding-bottom: 0.2cm !important;
+        border-bottom: 2px solid #e0e0e0 !important;
+        page-break-after: avoid !important;
+    }
+
+    /* Disease Diagnosis Section */
+    .disease-diagnosis-group {
+        margin-top: 0.5cm !important;
+        page-break-inside: avoid !important;
+    }
+
+    .disease-icon,
+    .clinical-group-icon,
+    .notice-group-icon,
+    .info-group-icon,
+    .visualization-group-icon {
+        display: none !important;
+    }
+
+    .result-type {
+        display: block !important;
+        background: #f0f8ff !important;
+        padding: 0.5cm !important;
+        border-left: 5px solid #4A90E2 !important;
+        margin: 0.3cm 0 !important;
+    }
+
+    .result-type-icon {
+        display: none !important;
+    }
+
+    .result-type-title {
+        font-size: 18pt !important;
+        color: #2C3E50 !important;
+        font-weight: bold !important;
+        display: block !important;
+    }
+
+    .result-type-desc {
+        font-size: 10pt !important;
+        color: #666 !important;
+        margin-top: 0.2cm !important;
+        display: block !important;
+    }
+
+    /* Confidence Score */
+    .confidence-group {
+        page-break-inside: avoid !important;
+    }
+
+    .confidence-score {
+        font-size: 20pt !important;
+        color: #764ba2 !important;
+        font-weight: bold !important;
+        display: block !important;
+        margin: 0.3cm 0 !important;
+    }
+
+    .confidence-explanation {
+        font-size: 10pt !important;
+        color: #666 !important;
+        font-style: italic !important;
+    }
+
+    /* Clinical Interpretation */
+    .clinical-group {
+        background: #fffef5 !important;
+        padding: 0.5cm !important;
+        border-left: 5px solid #14B8A6 !important;
+        margin: 0.3cm 0 !important;
+        page-break-inside: avoid !important;
+    }
+
+    .clinical-group strong {
+        font-size: 11pt !important;
+        color: #2C3E50 !important;
+        display: block !important;
+        margin-bottom: 0.3cm !important;
+    }
+
+    /* Notice Group - Hide in print */
+    .notice-group {
+        display: none !important;
+    }
+
+    /* Recording Information */
+    .info-group {
+        page-break-inside: avoid !important;
+    }
+
+    .info-list {
+        list-style: none !important;
+        padding: 0 !important;
+        display: table !important;
+        width: 100% !important;
+    }
+
+    .info-list li {
+        display: table-row !important;
+        page-break-inside: avoid !important;
+        margin: 0 !important;
+        padding: 0.2cm 0 !important;
+        border-bottom: 1px solid #f0f0f0 !important;
+    }
+
+    .info-list li strong {
+        display: table-cell !important;
+        width: 40% !important;
+        padding-right: 1cm !important;
+        color: #2C3E50 !important;
+        font-weight: bold !important;
+    }
+
+    .info-list li strong::after {
+        content: '' !important;
+    }
+
+    /* Section Dividers */
+    .section-divider {
+        border: none !important;
+        border-top: 1px solid #e0e0e0 !important;
+        margin: 0.5cm 0 !important;
+    }
+
+    /* Visualizations - Force to new page */
+    .visualization-group {
+        page-break-before: always !important;
+        margin-top: 0 !important;
+        padding-top: 1cm !important;
+    }
+
+    .visualization-group h3 {
+        text-align: center !important;
+        font-size: 16pt !important;
+        margin-bottom: 1cm !important;
+        border-bottom: 3px solid #4A90E2 !important;
+        padding-bottom: 0.3cm !important;
+    }
+
+    .visualization-container {
+        display: block !important;
+        page-break-inside: avoid !important;
+    }
+
+    .visualization-item {
+        background: white !important;
+        border: 2px solid #e0e0e0 !important;
+        border-radius: 0 !important;
+        padding: 0.5cm !important;
+        margin-bottom: 1cm !important;
+        page-break-inside: avoid !important;
+        box-shadow: none !important;
+    }
+
+    .visualization-item h4 {
+        color: #2C3E50 !important;
+        font-size: 12pt !important;
+        font-weight: bold !important;
+        margin-bottom: 0.5cm !important;
+        text-align: center !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.5px !important;
+    }
+
+    .visualization-img {
+        width: 100% !important;
+        height: auto !important;
+        border: 1px solid #ccc !important;
+        page-break-inside: avoid !important;
+    }
+
+    /* Page numbering and footer */
+    @page {
+        margin: 1.5cm 1.5cm 2cm 1.5cm;
+
+        @bottom-center {
+            content: "Page " counter(page) " of " counter(pages);
+            font-size: 9pt;
+            color: #666;
+        }
+
+        @bottom-right {
+            content: "Generated: " string(date);
+            font-size: 9pt;
+            color: #666;
+        }
+    }
+
+    /* Ensure proper page breaks */
     .disease-diagnosis-group,
     .confidence-group,
     .clinical-group,
     .notice-group,
-    .info-group,
-    .page-header {
-        display: block !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        width: 100% !important;
+    .info-group {
+        page-break-inside: avoid !important;
     }
-    
-    span, strong, p, div {
-        display: inline !important;
-        visibility: visible !important;
+}
+
+/* Visualizations Section Styles */
+.visualization-group {
+    margin-top: 1.2rem;
+}
+
+.visualization-group {
+    margin-top: 1.2rem;
+}
+.visualization-group h3 {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+}
+.visualization-group-icon {
+    margin-right: 8px;
+    color: var(--primary-blue);
+    font-size: 1.3rem;
+}
+
+.visualization-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-top: 1.5rem;
+}
+
+.visualization-item {
+    background: #F8F9FA;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.visualization-item h4 {
+    color: var(--text-dark);
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.visualization-img {
+    max-width: 100%;
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #E1E8ED;
+}
+
+@media (max-width: 768px) {
+    .results-card {
+        padding: 2rem 1.5rem;
+        max-width: 100%;
     }
-    
-    ul, li {
-        display: list-item !important;
-        visibility: visible !important;
-    }
-    
-    h3 {
-        display: block !important;
-        margin-top: 1em !important;
+    .visualization-item h4 {
+        font-size: 1.1rem;
     }
 }

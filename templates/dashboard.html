@@ -18,29 +18,72 @@
         <form id="uploadForm" enctype="multipart/form-data">
             <!-- Patient Information -->
             <div style="background: #F8F9FA; padding: 2rem; border-radius: 12px; margin-bottom: 2rem;">
-                <h4 style="margin-bottom: 1.5rem; color: var(--primary-blue);">Patient Information</h4>
-                
+                <h4 style="margin-bottom: 1.5rem; color: var(--primary-blue);">
+                    <i class="fas fa-user"></i> Patient Information
+                </h4>
+
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 1.5rem;">
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">
+                            First Name *
+                        </label>
+                        <input type="text" name="first_name" id="firstName" required
+                               style="width: 100%; padding: 0.75rem; border: 1px solid #E1E8ED; border-radius: 8px;"
+                               placeholder="First name">
+                    </div>
+
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">
+                            Middle Name
+                        </label>
+                        <input type="text" name="middle_name" id="middleName"
+                               style="width: 100%; padding: 0.75rem; border: 1px solid #E1E8ED; border-radius: 8px;"
+                               placeholder="Middle name (optional)">
+                    </div>
+
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">
+                            Last Name *
+                        </label>
+                        <input type="text" name="last_name" id="lastName" required
+                               style="width: 100%; padding: 0.75rem; border: 1px solid #E1E8ED; border-radius: 8px;"
+                               placeholder="Last name">
+                    </div>
+                </div>
+
                 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;">
                     <div>
-                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Patient Name *</label>
-                        <input type="text" name="patient_name" required
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">
+                            Patient ID *
+                        </label>
+                        <input type="text" name="patient_id" id="patientId" required maxlength="4" pattern="[0-9]{4}"
+                               style="width: 100%; padding: 0.75rem; border: 1px solid #E1E8ED; border-radius: 8px;"
+                               placeholder="4-digit ID (e.g., 1234)">
+                        <small style="color: var(--text-light); font-size: 0.85rem;">Must be exactly 4 digits</small>
+                    </div>
+
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">
+                            Phone Number *
+                        </label>
+                        <input type="tel" name="phone_number" id="phoneNumber" required maxlength="10" pattern="[0-9]{10}"
+                               style="width: 100%; padding: 0.75rem; border: 1px solid #E1E8ED; border-radius: 8px;"
+                               placeholder="10-digit number (e.g., 1234567890)">
+                        <small style="color: var(--text-light); font-size: 0.85rem;">Must be exactly 10 digits</small>
+                    </div>
+
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">
+                            Date of Birth
+                        </label>
+                        <input type="date" name="date_of_birth"
                                style="width: 100%; padding: 0.75rem; border: 1px solid #E1E8ED; border-radius: 8px;">
                     </div>
-                    
+
                     <div>
-                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Patient ID/Medical Record # *</label>
-                        <input type="text" name="patient_id" required
-                               style="width: 100%; padding: 0.75rem; border: 1px solid #E1E8ED; border-radius: 8px;">
-                    </div>
-                    
-                    <div>
-                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Age</label>
-                        <input type="number" name="age" min="0" max="150"
-                               style="width: 100%; padding: 0.75rem; border: 1px solid #E1E8ED; border-radius: 8px;">
-                    </div>
-                    
-                    <div>
-                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Gender</label>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">
+                            Gender
+                        </label>
                         <select name="gender"
                                 style="width: 100%; padding: 0.75rem; border: 1px solid #E1E8ED; border-radius: 8px;">
                             <option value="">Select Gender</option>
@@ -49,17 +92,87 @@
                             <option value="Other">Other</option>
                         </select>
                     </div>
+
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">
+                            Email Address
+                        </label>
+                        <input type="email" name="email_address"
+                               style="width: 100%; padding: 0.75rem; border: 1px solid #E1E8ED; border-radius: 8px;"
+                               placeholder="patient@example.com">
+                        <small style="color: var(--text-light); font-size: 0.85rem;">Optional</small>
+                    </div>
                 </div>
-                
-                <div style="margin-top: 1.5rem;">
-                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Recording Location</label>
-                    <select name="recording_location"
-                            style="width: 100%; padding: 0.75rem; border: 1px solid #E1E8ED; border-radius: 8px;">
-                        <option value="chest">Chest (Anterior)</option>
-                        <option value="back">Back (Posterior)</option>
-                        <option value="left">Left Side</option>
-                        <option value="right">Right Side</option>
-                    </select>
+            </div>
+
+            <!-- Clinical Context -->
+            <div style="background: #F8F9FA; padding: 2rem; border-radius: 12px; margin-bottom: 2rem;">
+                <h4 style="margin-bottom: 1.5rem; color: var(--primary-blue);">
+                    <i class="fas fa-stethoscope"></i> Clinical Context
+                </h4>
+
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;">
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">
+                            Recording Date/Time
+                        </label>
+                        <input type="datetime-local" name="recording_datetime" id="recordingDateTime"
+                               style="width: 100%; padding: 0.75rem; border: 1px solid #E1E8ED; border-radius: 8px;">
+                        <small style="color: var(--text-light); font-size: 0.85rem;">Auto-populated, editable</small>
+                    </div>
+
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">
+                            Visit Type
+                        </label>
+                        <select name="visit_type"
+                                style="width: 100%; padding: 0.75rem; border: 1px solid #E1E8ED; border-radius: 8px;">
+                            <option value="">Select Visit Type</option>
+                            <option value="Initial Assessment">Initial Assessment</option>
+                            <option value="Follow-up">Follow-up</option>
+                            <option value="Screening">Screening</option>
+                            <option value="Emergency">Emergency</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recording Details (Collapsible) -->
+            <div style="background: #F8F9FA; padding: 1rem 2rem; border-radius: 12px; margin-bottom: 2rem;">
+                <div onclick="toggleRecordingDetails()" style="cursor: pointer; display: flex; justify-content: space-between; align-items: center; padding: 1rem 0;">
+                    <h4 style="margin: 0; color: var(--primary-blue);">
+                        <i class="fas fa-microphone"></i> Recording Details (Optional)
+                    </h4>
+                    <i class="fas fa-chevron-down" id="recordingDetailsIcon" style="color: var(--primary-blue); transition: transform 0.3s;"></i>
+                </div>
+
+                <div id="recordingDetailsContent" style="display: none; margin-top: 1rem;">
+                    <div style="display: grid; grid-template-columns: 1fr; gap: 1.5rem;">
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">
+                                Recording Location
+                            </label>
+                            <select name="recording_location"
+                                    style="width: 100%; padding: 0.75rem; border: 1px solid #E1E8ED; border-radius: 8px;">
+                                <option value="chest">Chest (Anterior)</option>
+                                <option value="back">Back (Posterior)</option>
+                                <option value="left">Left Side</option>
+                                <option value="right">Right Side</option>
+                                <option value="apex">Apex</option>
+                                <option value="base">Base</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">
+                                Clinical Notes
+                            </label>
+                            <textarea name="clinical_notes" rows="4"
+                                      style="width: 100%; padding: 0.75rem; border: 1px solid #E1E8ED; border-radius: 8px; resize: vertical; font-family: inherit;"
+                                      placeholder="Provider observations, symptoms, auscultation findings, etc."></textarea>
+                            <small style="color: var(--text-light); font-size: 0.85rem;">Optional observations and notes</small>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -142,6 +255,50 @@
 
 {% block extra_js %}
 <script>
+// Toggle Recording Details Section
+function toggleRecordingDetails() {
+    const content = document.getElementById('recordingDetailsContent');
+    const icon = document.getElementById('recordingDetailsIcon');
+
+    if (content.style.display === 'none') {
+        content.style.display = 'block';
+        icon.style.transform = 'rotate(180deg)';
+    } else {
+        content.style.display = 'none';
+        icon.style.transform = 'rotate(0deg)';
+    }
+}
+
+// Form Validation
+document.getElementById('patientId').addEventListener('input', function(e) {
+    // Only allow digits
+    this.value = this.value.replace(/[^0-9]/g, '');
+    // Limit to 4 digits
+    if (this.value.length > 4) {
+        this.value = this.value.slice(0, 4);
+    }
+});
+
+document.getElementById('phoneNumber').addEventListener('input', function(e) {
+    // Only allow digits
+    this.value = this.value.replace(/[^0-9]/g, '');
+    // Limit to 10 digits
+    if (this.value.length > 10) {
+        this.value = this.value.slice(0, 10);
+    }
+});
+
+// Auto-populate recording datetime with current time
+const recordingDateTimeInput = document.getElementById('recordingDateTime');
+const now = new Date();
+const year = now.getFullYear();
+const month = String(now.getMonth() + 1).padStart(2, '0');
+const day = String(now.getDate()).padStart(2, '0');
+const hours = String(now.getHours()).padStart(2, '0');
+const minutes = String(now.getMinutes()).padStart(2, '0');
+const formattedDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
+recordingDateTimeInput.value = formattedDateTime;
+
 const uploadZone = document.getElementById('uploadZone');
 const fileInput = document.getElementById('audioFile');
 const fileInfo = document.getElementById('fileInfo');

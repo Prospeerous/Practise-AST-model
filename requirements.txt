@@ -1,4 +1,30 @@
-flask==3.0.0
+# ==================== FLASK & WEB FRAMEWORK (KEEP - Still needed) ====================
+Flask==3.0.0
 flask-login==0.6.3
 flask-sqlalchemy==3.1.1
 werkzeug==3.0.1
+# ====================================================================================
+
+# ==================== OLD MODEL DEPENDENCIES (COMMENTED OUT - AST/PyTorch) ====================
+# torch==2.0.1
+# torchaudio==2.0.2
+# ==============================================================================================
+
+# ==================== NEW MODEL DEPENDENCIES (CNN-LSTM/TensorFlow) ====================
+# TensorFlow - Main deep learning framework
+tensorflow==2.15.0
+
+# NumPy - Required by TensorFlow (compatible version)
+numpy>=1.22,<1.24
+
+# Librosa - Audio processing (replaces torchaudio)
+librosa==0.10.1
+
+# Audio file support libraries
+soundfile==0.12.1
+audioread==3.0.1
+
+# Additional dependencies for librosa
+numba==0.58.1
+scipy==1.11.4
+# ======================================================================================

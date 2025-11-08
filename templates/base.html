@@ -20,14 +20,21 @@
         </div>
         
         <ul class="nav-menu">
-            <li><a href="{{ url_for('dashboard') }}" class="{% if request.endpoint == 'dashboard' %}active{% endif %}">Dashboard</a></li>
-            <li><a href="{{ url_for('patients_list') }}" class="{% if request.endpoint == 'patients_list' %}active{% endif %}">Patients</a></li>
             {% if current_user.role == 'admin' %}
-            <li><a href="{{ url_for('admin_dashboard') }}" class="{% if 'admin' in request.endpoint %}active{% endif %}">Admin Panel</a></li>
+                <!-- Admin Navigation -->
+                <li><a href="{{ url_for('admin_dashboard') }}" class="{% if request.endpoint == 'admin_dashboard' %}active{% endif %}">Dashboard</a></li>
+                <li><a href="{{ url_for('admin_patients') }}" class="{% if request.endpoint == 'admin_patients' %}active{% endif %}">Manage Patients</a></li>
+                <li><a href="{{ url_for('reports') }}" class="{% if request.endpoint == 'reports' %}active{% endif %}">Reports</a></li>
+                <li><a href="{{ url_for('clinical_guidelines') }}" class="{% if request.endpoint == 'clinical_guidelines' %}active{% endif %}">Guidelines</a></li>
+                <li><a href="{{ url_for('settings') }}" class="{% if request.endpoint == 'settings' %}active{% endif %}">Settings</a></li>
+            {% else %}
+                <!-- Clinician Navigation -->
+                <li><a href="{{ url_for('dashboard') }}" class="{% if request.endpoint == 'dashboard' %}active{% endif %}">Dashboard</a></li>
+                <li><a href="{{ url_for('patients_list') }}" class="{% if request.endpoint == 'patients_list' %}active{% endif %}">Patients</a></li>
+                <li><a href="{{ url_for('reports') }}" class="{% if request.endpoint == 'reports' %}active{% endif %}">Reports</a></li>
+                <li><a href="{{ url_for('clinical_guidelines') }}" class="{% if request.endpoint == 'clinical_guidelines' %}active{% endif %}">Guidelines</a></li>
+                <li><a href="{{ url_for('settings') }}" class="{% if request.endpoint == 'settings' %}active{% endif %}">Settings</a></li>
             {% endif %}
-           <li><a href="{{ url_for('reports') }}" class="{% if request.endpoint == 'reports' %}active{% endif %}">Reports</a></li>
-<li><a href="{{ url_for('settings') }}" class="{% if request.endpoint == 'settings' %}active{% endif %}">Settings</a></li>
-
         </ul>
         
         <div class="user-section">

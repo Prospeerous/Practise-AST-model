@@ -12,24 +12,139 @@
             <p class="page-subtitle">Manage your profile and preferences</p>
         </div>
         <form method="POST">
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" value="{{ current_user.username }}" required />
+            <!-- Profile Information Section -->
+            <div style="margin-bottom: 2rem;">
+                <h3 style="font-size: 1.2rem; color: var(--text-dark); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid #E1E8ED;">
+                    <i class="fas fa-user" style="color: var(--primary-blue);"></i> Profile Information
+                </h3>
+
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" value="{{ current_user.username }}" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" value="{{ current_user.email }}" required />
+                    <small style="color: var(--text-light); font-size: 0.85rem; display: block; margin-top: 0.3rem;">
+                        Update your email address for account notifications
+                    </small>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone_number">Phone Number</label>
+                    <input type="tel" id="phone_number" name="phone_number" value="{{ current_user.phone_number or '' }}" maxlength="10" pattern="[0-9]{10}" />
+                    <small style="color: var(--text-light); font-size: 0.85rem; display: block; margin-top: 0.3rem;">
+                        Must be exactly 10 digits (shown on patient reports)
+                    </small>
+                </div>
+
+                <div class="form-group">
+                    <label for="role">Role</label>
+                    <input type="text" id="role" value="{{ current_user.role }}" disabled />
+                    <small style="color: var(--text-light); font-size: 0.85rem; display: block; margin-top: 0.3rem;">
+                        Your role cannot be changed
+                    </small>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" value="{{ current_user.email }}" disabled />
+
+            <!-- Password Change Section -->
+            <div style="margin-bottom: 2rem;">
+                <h3 style="font-size: 1.2rem; color: var(--text-dark); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid #E1E8ED;">
+                    <i class="fas fa-lock" style="color: var(--primary-purple);"></i> Change Password
+                </h3>
+
+                <div class="form-group">
+                    <label for="current_password">Current Password</label>
+                    <input type="password" id="current_password" name="current_password" placeholder="Enter current password" />
+                    <small style="color: var(--text-light); font-size: 0.85rem; display: block; margin-top: 0.3rem;">
+                        Required only if changing password
+                    </small>
+                </div>
+
+                <div class="form-group">
+                    <label for="new_password">New Password</label>
+                    <input type="password" id="new_password" name="new_password" placeholder="Enter new password (min 6 characters)" />
+                    <small style="color: var(--text-light); font-size: 0.85rem; display: block; margin-top: 0.3rem;">
+                        Leave blank to keep current password
+                    </small>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm_password">Confirm New Password</label>
+                    <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm new password" />
+                    <small style="color: var(--text-light); font-size: 0.85rem; display: block; margin-top: 0.3rem;">
+                        Must match new password
+                    </small>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="role">Role</label>
-                <input type="text" id="role" value="{{ current_user.role }}" disabled />
-            </div>
+
             <div class="form-actions">
                 <button type="submit" class="upload-btn">
-                    Save Changes
+                    <i class="fas fa-save"></i> Save Changes
                 </button>
             </div>
         </form>
+
+        <!-- Two-Factor Authentication Section -->
+        <div style="margin-top: 2rem; padding-top: 2rem; border-top: 2px solid #E1E8ED;">
+            <h3 style="font-size: 1.2rem; color: var(--text-dark); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid #E1E8ED;">
+                <i class="fas fa-shield-alt" style="color: var(--primary-blue);"></i> Two-Factor Authentication (2FA)
+            </h3>
+
+            <div style="background: #E3F2FD; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; border-left: 4px solid var(--primary-blue);">
+                <p style="margin: 0; color: var(--text-dark);">
+                    <i class="fas fa-info-circle" style="color: var(--primary-blue);"></i>
+                    <strong>2FA adds an extra layer of security</strong> to your account by requiring a time-based code from your phone in addition to your password when logging in.
+                </p>
+            </div>
+
+            {% if current_user.is_2fa_enabled %}
+                <!-- 2FA is currently enabled -->
+                <div style="background: #E8F5E9; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; border-left: 4px solid #4CAF50;">
+                    <p style="margin: 0 0 0.5rem 0; color: var(--text-dark); font-weight: 600;">
+                        <i class="fas fa-check-circle" style="color: #4CAF50;"></i>
+                        Two-Factor Authentication is currently ENABLED
+                    </p>
+                    <p style="margin: 0; color: var(--text-dark); font-size: 0.95rem;">
+                        Your account is protected with an additional security layer. You'll need to enter a code from your authenticator app when logging in.
+                    </p>
+                </div>
+
+                <form method="POST" action="{{ url_for('disable_2fa') }}" onsubmit="return confirm('Are you sure you want to disable Two-Factor Authentication? This will make your account less secure.');">
+                    <button type="submit" style="padding: 0.75rem 1.5rem; background: #FF5722; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">
+                        <i class="fas fa-shield-alt"></i> Disable 2FA
+                    </button>
+                </form>
+            {% else %}
+                <!-- 2FA is currently disabled -->
+                <div style="background: #FFF3E0; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; border-left: 4px solid #FF9800;">
+                    <p style="margin: 0 0 0.5rem 0; color: var(--text-dark); font-weight: 600;">
+                        <i class="fas fa-exclamation-triangle" style="color: #FF9800;"></i>
+                        Two-Factor Authentication is currently DISABLED
+                    </p>
+                    <p style="margin: 0; color: var(--text-dark); font-size: 0.95rem;">
+                        We highly recommend enabling 2FA to protect your account and patient data.
+                    </p>
+                </div>
+
+                <a href="{{ url_for('setup_2fa') }}" style="display: inline-block; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 8px; font-weight: 600;">
+                    <i class="fas fa-shield-alt"></i> Enable 2FA
+                </a>
+            {% endif %}
+        </div>
     </div>
 </div>
+
+<script>
+// Phone number validation for settings
+document.getElementById('phone_number').addEventListener('input', function(e) {
+    // Only allow digits
+    this.value = this.value.replace(/[^0-9]/g, '');
+    // Limit to 10 digits
+    if (this.value.length > 10) {
+        this.value = this.value.slice(0, 10);
+    }
+});
+</script>
 {% endblock %}
